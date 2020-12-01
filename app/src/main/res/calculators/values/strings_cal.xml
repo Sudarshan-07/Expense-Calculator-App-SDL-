@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="calc_si">Calculate Simple Interest</string>
+    <string name="calc_ci">Calculate Compound Interest</string>
+    <string name="principal">Enter Principal Amount</string>
+    <string name="simple_interest">Enter Interest Percentage per Year</string>
+    <string name="years">Enter Number of Years</string>
+</resources>

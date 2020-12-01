@@ -1,0 +1,116 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">BER Account Manager</string>
+    <string name="delete_trans">Delete Transaction</string>
+    <string name="edit_trans">Edit Transaction</string>
+    <string name="delete_category">Delete Category</string>
+    <string name="add_category">Add New Category</string>
+    <string name="done">Done</string>
+    <string name="add_transaction">Add New Transaction</string>
+    <string name="filter">Filter By Date</string>
+
+    <!--Names of toolbar in different activities-->
+    <string name="home">Homepage</string>
+
+
+    <!--edit_category_fragment-->
+    <string name="cat_name">Category Name</string>
+
+    <!--fragment_today-->
+    <string name="today_total" tools:ignore="StringEscaping">Today's Total</string>
+    <string name="today_expenses" tools:ignore="StringEscaping">Today's Expenses and Income</string>
+    <string name="add_expense_income">New Expense/Income</string>
+
+    <!--fragment_report_income and fragment_report_expense-->
+    <string name="total_string">Total</string>
+    <string name="no_expenses">There are no Expenses.</string>
+    <string name="no_income">There is no Income.</string>
+
+
+    <!--add_transaction_fragment-->
+    <string name="enter_amount">Enter Amount</string>
+    <string name="enter_transaction_date">Enter Transaction Date</string>
+    <string name="category">Category</string>
+    <string name="type_of_transaction">Enter The Type of Transaction</string>
+    <string name="debit">Debit / Spent</string>
+    <string name="credit">Credit / Earned</string>
+
+
+    <!--filter_by_date_menu-->
+    <string name="filter_by_today">By Today</string>
+    <string name="filter_by_week">By Week</string>
+    <string name="filter_by_month">By Month</string>
+    <string name="filter_by_year">By Year</string>
+    <string name="filter_by_date_range">By Date Range</string>
+
+
+    <!--Group1-->
+    <string name="group1_Home">Home</string>
+    <string name ="reports">expense reports</string>
+    <string name="group1_calc">Calculators</string>
+    <string name="simple_calc">Simple Calculator</string>
+    <string name="interest_calculator">Interest Calculator</string>
+    <string name="group1_io">Investment Options</string>
+    <string name="exp_category">Expense Categories</string>
+
+
+
+    <!--Group2-->
+    <string name="group1_sett">Settings</string>
+    <string name="group1_contact">Contact Us</string>
+
+
+    <!--Overflow Menu-->
+    <string name="show_records">Show Records</string>
+    <string name="save_pdf">Save As PDF</string>
+    <string name="rate">Rate the App</string>
+    <string name="share">Share The App</string>
+
+
+    <!--Predefined categories-->
+    <string name="cat_general">General</string>
+    <string name="cat_clothes">Clothes</string>
+    <string name="cat_entertainment">Entertainment</string>
+    <string name="cat_food">Food</string>
+    <string name="cat_health">Health</string>
+    <string name="cat_household">Household</string>
+    <string name="cat_hygiene">Hygiene</string>
+    <string name="cat_pets">Pets</string>
+    <string name="cat_presents">Presents</string>
+    <string name="cat_sports">Sports</string>
+    <string name="cat_transportation">Transportation</string>
+
+
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <string name="delete_string">Delete</string>
+    <string name="done_string">Done</string>
+    <string name="error_empty_field">Empty field</string>
+    <string name="error_zero_value">Zero value is invalid</string>
+    <string name="error_incorrect_input">Incorrect input</string>
+
+    <!--List of currency-->
+    <string name="pref_currency_title">Currency</string>
+    <string name="pref_default_currency">INR</string>
+    <string-array name="pref_currency_titles">
+        <item>Indian Rupee</item>
+        <item>US Dollar</item>
+        <item>Euro</item>
+        <item>British Pound</item>
+        <item>Canadian Dollar</item>
+        <item>Australian Dollar</item>
+        <item>Ukrainian Hryvnia</item>
+        <item>Russian Rouble</item>
+    </string-array>
+    <string-array name="pref_currency_values">
+        <item>INR</item>
+        <item>USD</item>
+        <item>EUR</item>
+        <item>GBP</item>
+        <item>CAD</item>
+        <item>AUD</item>
+        <item>UAH</item>
+        <item>RUB</item>
+    </string-array>
+</resources>
