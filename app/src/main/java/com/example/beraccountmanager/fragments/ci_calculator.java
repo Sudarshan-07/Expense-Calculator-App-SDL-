@@ -13,12 +13,14 @@ import android.widget.TextView;
 
 import com.example.beraccountmanager.R;
 
+import java.text.DecimalFormat;
 
-public class SICalculatorFragment extends Fragment {
-    private EditText principle,interest,years;
-    private Button sicalc;
+
+public class ci_calculator extends Fragment {
+    private EditText principle,interest,years,time_period;
+    private Button cicalc;
     private TextView screen;
-    double p,n,r,total_amount,total_interest;
+    double p,n,r,t,a,total_amount;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,23 +28,26 @@ public class SICalculatorFragment extends Fragment {
         principle=getView().findViewById(R.id.principal_amount);
         interest=getView().findViewById(R.id.simple_interest);
         years=getView().findViewById(R.id.number_of_years);
-        sicalc=getView().findViewById(R.id.calculate_si);
+        cicalc=getView().findViewById(R.id.calculate_ci);
+        time_period=getView().findViewById(R.id.time_period);
         screen=getView().findViewById(R.id.display);
     }
-    public void ButtonClickSi(View v){
+    public void ButtonClickCI(View v){
         p=Double.parseDouble(principle.getText().toString());
         n=Double.parseDouble(years.getText().toString());
         r=Double.parseDouble(interest.getText().toString());
-        total_interest=(p*n*r)/100;
-        total_amount=(p+total_interest);
-        screen.setText(Double.toString(total_amount));
+        t=Double.parseDouble(time_period.getText().toString());
+        r=r/100;
+        a=Math.pow((1+r/n),(n*t));
+        total_amount=a*p;
+        DecimalFormat numberFormat =new DecimalFormat("#.000");
+        screen.setText(Double.toString(Double.parseDouble(numberFormat.format(total_amount))));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.simple_interest_calculator, container, false);
-        return rootView;
+        return inflater.inflate(R.layout.fragment_ci_calculator, container, false);
     }
 }
