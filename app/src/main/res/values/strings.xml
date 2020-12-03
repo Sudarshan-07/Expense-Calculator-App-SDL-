@@ -16,8 +16,8 @@
     <string name="cat_name">Category Name</string>
 
     <!--fragment_today-->
-    <string name="today_total" tools:ignore="StringEscaping">Today's Total</string>
-    <string name="today_expenses" tools:ignore="StringEscaping">Today's Expenses and Income</string>
+    <string name="today_total" tools:ignore="StringEscaping">Todays Total</string>
+    <string name="today_expenses" tools:ignore="StringEscaping,Typos">Todays Expenses and Income</string>
     <string name="add_expense_income">New Expense/Income</string>
 
     <!--fragment_report_income and fragment_report_expense-->
