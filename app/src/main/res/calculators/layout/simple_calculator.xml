@@ -44,7 +44,7 @@
             android:layout_margin="1dp"
             android:layout_weight="0.25"
             android:background="@drawable/selector"
-            android:text="<--"
+            android:text="C"
             android:textColor="#ecf0f1"
             android:onClick="ButtonClick"
             android:textSize="20sp" />

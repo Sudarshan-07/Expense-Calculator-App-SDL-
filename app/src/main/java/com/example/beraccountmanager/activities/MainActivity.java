@@ -3,6 +3,7 @@ package com.example.beraccountmanager.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
@@ -22,21 +23,25 @@ public class MainActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
+
+
     @Override
     @LayoutRes
     protected int getLayoutResId() {
         return R.layout.activity_main;
     }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mNavDrawer = (NavigationView) findViewById(R.id.drawer_layout);
+        mNavDrawer = (NavigationView) findViewById(R.id.hamburger_menu);
         mDrawerToggle = setupDrawerToggle();
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         setupDrawerContent(mNavDrawer);
         loadTodayFragment();
     }
+
     @Override
     public void onBackPressed() {
         if (!closeNavigationDrawer()) {
@@ -47,7 +52,9 @@ public class MainActivity extends BaseActivity {
             } else {
                 super.onBackPressed();
             }
-        } }
+        }
+    }
+
     private void loadFragment(Class fragmentClass, @IdRes int navDrawerCheckedItemId,
                               CharSequence toolbarTitle) {
         Fragment fragment = null;
@@ -61,10 +68,12 @@ public class MainActivity extends BaseActivity {
         mNavDrawer.setCheckedItem(navDrawerCheckedItemId);
         setTitle(toolbarTitle);
     }
+
     private void loadTodayFragment() {
         loadFragment(TodayFragment.class, R.id.nav_home,
                 getResources().getString(R.string.group1_Home));
     }
+
     private void setupDrawerContent(NavigationView navigationView) {
 
         navigationView.setNavigationItemSelectedListener(
@@ -77,6 +86,7 @@ public class MainActivity extends BaseActivity {
 
                 });
     }
+
     private boolean closeNavigationDrawer() {
         boolean drawerIsOpen = mDrawerLayout.isDrawerOpen(GravityCompat.START);
         if (drawerIsOpen) {
@@ -88,9 +98,10 @@ public class MainActivity extends BaseActivity {
     public void hideNavigationBar() {
         closeNavigationDrawer();
     }
+
     private void selectDrawerItem(MenuItem menuItem) {
         closeNavigationDrawer();
-        switch(menuItem.getItemId()) {
+        switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 loadFragment(TodayFragment.class, menuItem.getItemId(), menuItem.getTitle());
                 break;
@@ -102,9 +113,9 @@ public class MainActivity extends BaseActivity {
             case R.id.SI_calc:
                 loadFragment(SICalculatorFragment.class, menuItem.getItemId(), menuItem.getTitle());
                 break;
-           /// case R.id.nav_sett:
-                //startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                //break;
+            /// case R.id.nav_sett:
+            //startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+            //break;
             default:
                 loadFragment(TodayFragment.class, menuItem.getItemId(), menuItem.getTitle());
         }
@@ -112,8 +123,8 @@ public class MainActivity extends BaseActivity {
 
     private ActionBarDrawerToggle setupDrawerToggle() {
         return new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
-                R.string.drawer_open,  R.string.drawer_close);
+                R.string.drawer_open, R.string.drawer_close);
     }
 
-    }
+}
 

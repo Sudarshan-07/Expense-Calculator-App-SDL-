@@ -22,7 +22,7 @@ public final class ExpensesContract {
 
 
         public static final Uri CONTENT_URI = Uri.withAppendedPath(AUTHORITY_URI, "expenses");
-        ic static final String DEFAULT_SORT_ORDER = DATE + " ASC";
+        public static final String DEFAULT_SORT_ORDER = DATE + " ASC";
 
         public static final String VALUES_SUM = "values_sum";
     }
