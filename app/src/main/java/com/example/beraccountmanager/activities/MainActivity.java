@@ -1,13 +1,11 @@
 package com.example.beraccountmanager.activities;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -21,54 +19,24 @@ import com.example.beraccountmanager.fragments.TodayFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends BaseActivity {
-    private DrawerLayout drawerlayout;
-    private NavigationView navdrawer;
-    private ActionBarDrawerToggle drawertoggle;
-
+    private DrawerLayout mDrawerLayout;
+    private NavigationView mNavDrawer;
+    private ActionBarDrawerToggle mDrawerToggle;
     @Override
     @LayoutRes
     protected int getLayoutResId() {
         return R.layout.activity_main;
     }
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        drawerlayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navdrawer = (NavigationView) findViewById(R.id.hamburger_menu);
-        drawertoggle = setupDrawerToggle();
-        drawerlayout.addDrawerListener(drawertoggle);
-        setupDrawerContent(navdrawer);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mNavDrawer = (NavigationView) findViewById(R.id.drawer_layout);
+        mDrawerToggle = setupDrawerToggle();
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        setupDrawerContent(mNavDrawer);
         loadTodayFragment();
     }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        closeNavigationDrawer();
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
-        if (drawertoggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        drawertoggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggle
-        drawertoggle.onConfigurationChanged(newConfig);
-    }
-
     @Override
     public void onBackPressed() {
         if (!closeNavigationDrawer()) {
@@ -80,10 +48,22 @@ public class MainActivity extends BaseActivity {
                 super.onBackPressed();
             }
         } }
+    private void loadFragment(Class fragmentClass, @IdRes int navDrawerCheckedItemId,
+                              CharSequence toolbarTitle) {
+        Fragment fragment = null;
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-    private ActionBarDrawerToggle setupDrawerToggle() {
-        return new ActionBarDrawerToggle(this, drawerlayout, mToolbar,
-                R.string.drawer_open,  R.string.drawer_close);
+        insertFragment(fragment);
+        mNavDrawer.setCheckedItem(navDrawerCheckedItemId);
+        setTitle(toolbarTitle);
+    }
+    private void loadTodayFragment() {
+        loadFragment(TodayFragment.class, R.id.nav_home,
+                getResources().getString(R.string.group1_Home));
     }
     private void setupDrawerContent(NavigationView navigationView) {
 
@@ -97,6 +77,17 @@ public class MainActivity extends BaseActivity {
 
                 });
     }
+    private boolean closeNavigationDrawer() {
+        boolean drawerIsOpen = mDrawerLayout.isDrawerOpen(GravityCompat.START);
+        if (drawerIsOpen) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        }
+        return drawerIsOpen;
+    }
+
+    public void hideNavigationBar() {
+        closeNavigationDrawer();
+    }
     private void selectDrawerItem(MenuItem menuItem) {
         closeNavigationDrawer();
         switch(menuItem.getItemId()) {
@@ -106,45 +97,23 @@ public class MainActivity extends BaseActivity {
             case R.id.nav_reports:
                 loadFragment(ExpenseReportFragment.class, menuItem.getItemId(), menuItem.getTitle());
                 break;
-//            case R.id.simple_calc:
-//                loadFragment(CalculatorFragment.class, menuItem.getItemId(), menuItem.getTitle());
-//            case R.id.SI_calc:
-//                loadFragment(SICalculatorFragment.class, menuItem.getItemId(), menuItem.getTitle());
-//                break;
-//           case R.id.nav_sett:
-//                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-//                break;
+            case R.id.simple_calc:
+                loadFragment(CalculatorFragment.class, menuItem.getItemId(), menuItem.getTitle());
+            case R.id.SI_calc:
+                loadFragment(SICalculatorFragment.class, menuItem.getItemId(), menuItem.getTitle());
+                break;
+           /// case R.id.nav_sett:
+                //startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                //break;
             default:
                 loadFragment(TodayFragment.class, menuItem.getItemId(), menuItem.getTitle());
         }
     }
-    private boolean closeNavigationDrawer() {
-        boolean drawerIsOpen = drawerlayout.isDrawerOpen(GravityCompat.START);
-        if (drawerIsOpen) {
-            drawerlayout.closeDrawer(GravityCompat.START);
-        }
-        return drawerIsOpen;
-    }
-    public void hideNavigationBar() {
-        closeNavigationDrawer();
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
+                R.string.drawer_open,  R.string.drawer_close);
     }
 
-    private void loadFragment(Class fragmentClass, @IdRes int navDrawerCheckedItemId,
-                              CharSequence toolbarTitle) {
-        Fragment fragment = null;
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        insertFragment(fragment);
-        navdrawer.setCheckedItem(navDrawerCheckedItemId);
-        setTitle(toolbarTitle);
-    }
-    private void loadTodayFragment() {
-        loadFragment(TodayFragment.class, R.id.nav_home,
-                getResources().getString(R.string.group1_Home));
-    }
     }
 

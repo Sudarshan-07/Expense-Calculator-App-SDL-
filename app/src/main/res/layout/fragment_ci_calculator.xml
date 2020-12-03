@@ -14,7 +14,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:autofillHints=""
-        android:hint="@string/principal"
+        android:hint="Enter Principle Balance"
         android:inputType="numberDecimal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -31,7 +31,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:autofillHints=""
-        android:hint="@string/simple_interest"
+        android:hint="Enter Interest Rate"
         android:inputType="numberDecimal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -48,7 +48,24 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:autofillHints=""
-        android:hint="@string/years"
+        android:hint="Enter interest applied per time period"
+        android:inputType="numberDecimal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:singleLine="true"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/time_period"
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        android:layout_gravity="end|center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:autofillHints=""
+        android:hint="Enter number of times period elapsed"
         android:inputType="numberDecimal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -60,19 +77,19 @@
         android:layout_width="match_parent"
         android:layout_height="101dp"
         android:gravity="center"
-        android:hint="Total amount after Simple Interest"
+        android:hint="Total amount after Compound Interest"
         android:textSize="30sp" />
 
 
     <Button
-        android:id="@+id/calculate_si"
+        android:id="@+id/calculate_ci"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:clickable="true"
         android:focusable="true"
-        android:onClick="ButtonClickSI"
+        android:onClick="ButtonClickCI"
         android:text="Calculate" />
 
 </LinearLayout>
