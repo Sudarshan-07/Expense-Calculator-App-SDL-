@@ -163,11 +163,7 @@ public class ExpensesProvider extends ContentProvider {
         return cursor;
     }
 
-    @Nullable
-    @Override
-    public String getType(@NonNull Uri uri) {
-        return null;
-    }
+
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
@@ -296,5 +292,27 @@ public class ExpensesProvider extends ContentProvider {
                 selection,
                 selectionArgs
         );
+    }
+    @Override
+    public String getType(Uri uri) {
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case CATEGORIES:
+                return Categories.CONTENT_TYPE;
+            case CATEGORIES_ID:
+                return Categories.CONTENT_ITEM_TYPE;
+            case EXPENSES:
+                return Expenses.CONTENT_TYPE;
+            case EXPENSES_ID:
+                return Expenses.CONTENT_ITEM_TYPE;
+            case EXPENSES_WITH_CATEGORIES:
+            case EXPENSES_WITH_CATEGORIES_DATE:
+            case EXPENSES_WITH_CATEGORIES_DATE_RANGE:
+            case EXPENSES_WITH_CATEGORIES_SUM_DATE:
+            case EXPENSES_WITH_CATEGORIES_SUM_DATE_RANGE:
+                return ExpensesContract.ExpensesWithCategories.CONTENT_TYPE;
+            default:
+                return null;
+        }
     }
 }
