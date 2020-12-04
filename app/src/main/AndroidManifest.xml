@@ -9,15 +9,45 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.CategoryEditActivity"></activity>
-        <activity android:name=".activities.TransactionEditActivity" />
-        <activity android:name=".activities.MainActivity">
+        <activity android:name=".activities.MainActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
+            android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-    </application>
 
+<!--        <activity android:name=".activities.SettingsActivity"-->
+<!--            android:screenOrientation="portrait"-->
+<!--            android:parentActivityName=".activities.MainActivity">-->
+<!--            &lt;!&ndash; Parent activity meta-data to support Android 4.0 and lower &ndash;&gt;-->
+<!--            <meta-data android:name="android.support.PARENT_ACTIVITY"-->
+<!--                android:value=".activities.MainActivity"/>-->
+<!--        </activity>-->
+
+        <activity android:name=".activities.CategoryEditActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible"
+            android:parentActivityName=".activities.MainActivity">
+            <!-- Parent activity meta-data to support Android 4.0 and lower -->
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity"/>
+        </activity>
+
+        <activity android:name=".activities.TransactionEditActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible"
+            android:parentActivityName=".activities.MainActivity">
+            <!-- Parent activity meta-data to support Android 4.0 and lower -->
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity"/>
+        </activity>
+
+        <provider
+            android:authorities="com.example.beraccountmanager.provider"
+            android:name=".providers.ExpensesProvider" />
+    </application>
 </manifest>

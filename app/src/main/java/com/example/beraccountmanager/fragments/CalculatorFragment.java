@@ -22,27 +22,37 @@ public class CalculatorFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        screen=getView().findViewById(R.id.display);
-        ac=getView().findViewById(R.id.allclear);
-        power=getView().findViewById(R.id.power);
-        del=getView().findViewById(R.id.buttonDel);
-        result=getView().findViewById(R.id.buttoneql);
-        add=getView().findViewById(R.id.button_add);
-        mul=getView().findViewById(R.id.buttonmul);
-        div=getView().findViewById(R.id.buttondiv);
-        sub=getView().findViewById(R.id.buttonsub);
-        percent=getView().findViewById(R.id.percent);
-        one=getView().findViewById(R.id.button1);
-        two=getView().findViewById(R.id.button2);
-        three=getView().findViewById(R.id.button3);
-        four=getView().findViewById(R.id.button4);
-        five=getView().findViewById(R.id.button5);
-        six=getView().findViewById(R.id.button6);
-        seven=getView().findViewById(R.id.button7);
-        eight=getView().findViewById(R.id.button8);
-        nine=getView().findViewById(R.id.button9);
-        zero=getView().findViewById(R.id.button0);
-        dot=getView().findViewById(R.id.buttonDot);
+
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View rootView =  inflater.inflate(R.layout.simple_calculator, container, false);
+        screen=rootView.findViewById(R.id.display);
+        ac=rootView.findViewById(R.id.allclear);
+        power=rootView.findViewById(R.id.power);
+        del=rootView.findViewById(R.id.buttonDel);
+        result=rootView.findViewById(R.id.buttoneql);
+        add=rootView.findViewById(R.id.button_add);
+        mul=rootView.findViewById(R.id.buttonmul);
+        div=rootView.findViewById(R.id.buttondiv);
+        sub=rootView.findViewById(R.id.buttonsub);
+        percent=rootView.findViewById(R.id.percent);
+        one=rootView.findViewById(R.id.button1);
+        two=rootView.findViewById(R.id.button2);
+        three=rootView.findViewById(R.id.button3);
+        four=rootView.findViewById(R.id.button4);
+        five=rootView.findViewById(R.id.button5);
+        six=rootView.findViewById(R.id.button6);
+        seven=rootView.findViewById(R.id.button7);
+        eight=rootView.findViewById(R.id.button8);
+        nine=rootView.findViewById(R.id.button9);
+        zero=rootView.findViewById(R.id.button0);
+        dot=rootView.findViewById(R.id.buttonDot);
+        return rootView;
 
     }
     public void ButtonClick(View view){
@@ -154,11 +164,5 @@ public class CalculatorFragment extends Fragment {
         screen.setText(input);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-    View rootView =  inflater.inflate(R.layout.simple_calculator, container, false);
-    return rootView;
-    }
+
 }

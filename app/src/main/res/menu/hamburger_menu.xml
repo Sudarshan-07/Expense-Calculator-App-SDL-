@@ -10,23 +10,15 @@
         <item
             android:id="@+id/nav_reports"
             android:title="@string/reports"/>
+
         <item
-            android:id="@+id/nav_calc"
-            android:title="@string/group1_calc">
-            <menu>
-                <item
-                    android:id="@+id/simple_calc"
-                    android:title= "@string/simple_calc" />
-                <item
-                    android:id="@+id/SI_calc"
-                    android:title="Simple Interest Calculator" />
-                <item
-                    android:id="@+id/CI_calc"
-                    android:title="Compound Interest Calculator" />
-
-            </menu>
-        </item>
-
+            android:id="@+id/simple_calc"
+            android:title= "@string/simple_calc" />
+        <item
+            android:id="@+id/SI_calc"
+            android:title="Simple Interest Calculator" />
+        <item android:id="@+id/CI_calc"
+            android:title="Compound Interest Calculator" />
         <item
             android:id="@+id/nav_io"
             android:title="@string/group1_io" />

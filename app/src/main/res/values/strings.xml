@@ -4,10 +4,17 @@
     <string name="edit_trans">Edit Transaction</string>
     <string name="delete_category">Delete Category</string>
     <string name="add_category">Add New Category</string>
+    <string name="edit_category">Edit category</string>
     <string name="done">Done</string>
+    <string name="category_updated">Category updated</string>
+    <string name="category_deleted">Category deleted</string>
+    <string name="delete_cat_dialog_msg">All associated expenses will be deleted as well. Are you sure you want to delete the category?</string>
+    <string name="delete_transaction_dialog_msg">Are you sure you want to delete the transaction?</string>
+    <string name="transaction_deleted">Transaction deleted</string>
+    <string name="transaction_updated">Transaction updated</string>
     <string name="add_transaction">Add New Transaction</string>
     <string name="filter">Filter By Date</string>
-
+    <string name="filter_expenses">Filter</string>
     <!--Names of toolbar in different activities-->
     <string name="home">Homepage</string>
 
@@ -16,8 +23,8 @@
     <string name="cat_name">Category Name</string>
 
     <!--fragment_today-->
-    <string name="today_total" tools:ignore="StringEscaping">Todays Total</string>
-    <string name="today_expenses" tools:ignore="StringEscaping,Typos">Todays Expenses and Income</string>
+    <string name="today_total">Todays Total</string>
+    <string name="today_expenses" >Todays Expenses and Income</string>
     <string name="add_expense_income">New Expense/Income</string>
 
     <!--fragment_report_income and fragment_report_expense-->
@@ -33,13 +40,14 @@
     <string name="type_of_transaction">Enter The Type of Transaction</string>
     <string name="debit">Debit / Spent</string>
     <string name="credit">Credit / Earned</string>
-
+    <string name="no_categories_string">&#60;No categories&#62;</string>
+    <string name="default_string">Default</string>
 
     <!--filter_by_date_menu-->
     <string name="filter_by_today">By Today</string>
     <string name="filter_by_week">By Week</string>
     <string name="filter_by_month">By Month</string>
-    <string name="filter_by_year">By Year</string>
+    <string name="filter_by_date">By Date</string>
     <string name="filter_by_date_range">By Date Range</string>
 
 
@@ -78,6 +86,10 @@
     <string name="cat_sports">Sports</string>
     <string name="cat_transportation">Transportation</string>
 
+    <plurals name="expenses_deleted_plurals_msg">
+        <item quantity="one">%d expense deleted</item>
+        <item quantity="other">%d expenses deleted</item>
+    </plurals>
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
@@ -111,6 +123,6 @@
         <item>UAH</item>
         <item>RUB</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
