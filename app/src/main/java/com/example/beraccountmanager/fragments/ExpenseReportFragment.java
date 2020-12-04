@@ -34,21 +34,21 @@ import com.example.beraccountmanager.providers.ExpensesContract.Expenses;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 public class ExpenseReportFragment extends Fragment  implements LoaderManager.LoaderCallbacks<Cursor>,
         PopupMenu.OnMenuItemClickListener {
-    private static final int sum_loader_id = 0;
-    private static final int list_loader_id = 1;
+    private static final int SUM_LOADER_ID = 0;
+    private static final int LIST_LOADER_ID = 1;
 
     private static final String REPORT_TYPE = "report_type";
     private static final String SELECTION_ARGS = "selection_args";
     private static final int DATE_REPORT = 10;
     private static final int DATE_RANGE_REPORT = 11;
-    
-    private ListView expenseslistview;
+    private ListView mExpensesListView;
     private SectionExpenseAdapter mAdapter;
     private View mProgressBar;
-    private TextView totalvaluetextview;
+    private TextView mTotalValueTextView;
     private TextView mTotalCurrencyTextView;
 
     @Override
@@ -59,14 +59,14 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_expense_report, container, false);
-        expenseslistview = (ListView) rootView.findViewById(R.id.expenses_report_list_view);
+        mExpensesListView = (ListView) rootView.findViewById(R.id.expenses_report_list_view);
         mProgressBar = rootView.findViewById(R.id.expenses_report_progress_bar);
-        totalvaluetextview = (TextView) rootView.findViewById(R.id.expenses_report_total_text_view);
+        mTotalValueTextView = (TextView) rootView.findViewById(R.id.expenses_report_total_text_view);
         mTotalCurrencyTextView = (TextView) rootView.findViewById(R.id.expenses_report_total_currency_text_view);
-        expenseslistview.setEmptyView(rootView.findViewById(R.id.expenses_report_empty_list_view));
-        totalvaluetextview.setText(Utils.formatToCurrency(0.0f));
+        mExpensesListView.setEmptyView(rootView.findViewById(R.id.expenses_report_empty_list_view));
+        mTotalValueTextView.setText(Utils.formatToCurrency(0.0f));
         return rootView;
     }
     @Override
@@ -74,7 +74,7 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
         super.onActivityCreated(savedInstanceState);
 
         mAdapter = new SectionExpenseAdapter(getActivity());
-        expenseslistview.setAdapter(mAdapter);
+        mExpensesListView.setAdapter(mAdapter);
 
         initLoaders();
     }
@@ -85,11 +85,14 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
         reloadReportData();
         //reloadSharedPreferences();
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.filter_records, menu);
     }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -138,14 +141,14 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
         String[] selectionArgs = args.getStringArray(SELECTION_ARGS);
         Uri uri = null;
         switch (id) {
-            case sum_loader_id:
+            case SUM_LOADER_ID:
                 if (reportType == DATE_REPORT) {
                     uri = ExpensesWithCategories.SUM_DATE_CONTENT_URI;
                 } else if (reportType == DATE_RANGE_REPORT) {
                     uri = ExpensesWithCategories.SUM_DATE_RANGE_CONTENT_URI;
                 }
                 break;
-            case list_loader_id:
+            case LIST_LOADER_ID:
                 mProgressBar.setVisibility(View.VISIBLE);
                 if (reportType == DATE_REPORT) {
                     uri = ExpensesWithCategories.DATE_CONTENT_URI;
@@ -155,7 +158,7 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
                 break;
         }
 
-        return new CursorLoader(getActivity(),
+        return new CursorLoader(Objects.requireNonNull(getActivity()),
                 uri,
                 null,
                 null,
@@ -166,14 +169,14 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
-            case sum_loader_id:
+            case SUM_LOADER_ID:
                 int valueSumIndex = data.getColumnIndex(Expenses.VALUES_SUM);
                 data.moveToFirst();
                 float valueSum = data.getFloat(valueSumIndex);
-                totalvaluetextview.setText(Utils.formatToCurrency(valueSum));
+                mTotalValueTextView.setText(Utils.formatToCurrency(valueSum));
                 break;
 
-            case list_loader_id:
+            case LIST_LOADER_ID:
                 // Hide the progress bar
                 mProgressBar.setVisibility(View.GONE);
                 // Update adapter's data
@@ -303,8 +306,8 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
     private void restartLoaders(int reportType, String[] selectionArgs) {
         Bundle args = createBundleArgs(reportType, selectionArgs);
 
-        getLoaderManager().restartLoader(sum_loader_id, args, this);
-        getLoaderManager().restartLoader(list_loader_id, args, this);
+        getLoaderManager().restartLoader(SUM_LOADER_ID, args, this);
+        getLoaderManager().restartLoader(LIST_LOADER_ID, args, this);
     }
 
     private void initLoaders() {
@@ -315,8 +318,8 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
         Bundle args = createBundleArgs(DATE_REPORT, selectionArgs);
 
         // Initialize the CursorLoaders
-        getLoaderManager().initLoader(sum_loader_id, args, this);
-        getLoaderManager().initLoader(list_loader_id, args, this);
+        getLoaderManager().initLoader(SUM_LOADER_ID, args, this);
+        getLoaderManager().initLoader(LIST_LOADER_ID, args, this);
     }
 
     private Bundle createBundleArgs(int reportType, String[] selectionArgs) {
@@ -325,4 +328,5 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
         args.putStringArray(SELECTION_ARGS, selectionArgs);
         return args;
     }
+
 }

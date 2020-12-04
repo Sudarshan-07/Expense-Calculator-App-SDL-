@@ -45,6 +45,15 @@ public class CalculatorFragment extends Fragment {
         dot=getView().findViewById(R.id.buttonDot);
 
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View rootView =  inflater.inflate(R.layout.simple_calculator, container, false);
+        return rootView;
+
+    }
     public void ButtonClick(View view){
         Button button=(Button) view;
         String data=button.getText().toString();
@@ -154,11 +163,5 @@ public class CalculatorFragment extends Fragment {
         screen.setText(input);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-    View rootView =  inflater.inflate(R.layout.simple_calculator, container, false);
-    return rootView;
-    }
+
 }

@@ -24,16 +24,21 @@ import static com.example.beraccountmanager.db.ExpenseDbHelper.EXPENSES_TABLE_NA
 public class ExpensesProvider extends ContentProvider {
     public static final int EXPENSES = 10;
     public static final int EXPENSES_ID = 11;
-    public static final int CATEGORIES = 12;
-    public static final int CATEGORIES_ID = 13;
-    public static final int EXPENSES_WITH_CATEGORIES = 14;
-    public static final int EXPENSES_WITH_CATEGORIES_DATE = 15;
-    public static final int EXPENSES_WITH_CATEGORIES_DATE_RANGE = 16;
-    public static final int EXPENSES_WITH_CATEGORIES_SUM_DATE = 17;
-    public static final int EXPENSES_WITH_CATEGORIES_SUM_DATE_RANGE = 18;
-    private SQLiteOpenHelper nDbHelper;
-    private SQLiteDatabase nDatabase;
+
+    public static final int CATEGORIES = 20;
+    public static final int CATEGORIES_ID = 21;
+
+    public static final int EXPENSES_WITH_CATEGORIES = 30;
+    public static final int EXPENSES_WITH_CATEGORIES_DATE = 31;
+    public static final int EXPENSES_WITH_CATEGORIES_DATE_RANGE = 32;
+    public static final int EXPENSES_WITH_CATEGORIES_SUM_DATE = 33;
+    public static final int EXPENSES_WITH_CATEGORIES_SUM_DATE_RANGE = 34;
+
+    private SQLiteOpenHelper mDbHelper;
+    private SQLiteDatabase mDatabase;
+
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
     static {
         sUriMatcher.addURI(ExpensesContract.AUTHORITY, "expenses", EXPENSES);
         sUriMatcher.addURI(ExpensesContract.AUTHORITY, "expenses/#", EXPENSES_ID);
@@ -50,6 +55,12 @@ public class ExpensesProvider extends ContentProvider {
         sUriMatcher.addURI(ExpensesContract.AUTHORITY, "expensesWithCategories/dateRange/sum",
                 EXPENSES_WITH_CATEGORIES_SUM_DATE_RANGE);
     }
+
+    /*
+     * SELECT expenses._id, expenses.value, categories.name, expenses.date
+     * FROM expenses JOIN categories
+     * ON expenses.category_id = categories._id
+     */
     private static final String BASE_SELECT_JOIN_EXPENSES_CATEGORIES_QUERY =
             "SELECT " + EXPENSES_TABLE_NAME + "." + Expenses._ID + ", " +
                     EXPENSES_TABLE_NAME + "." + Expenses.VALUE + ", " +
@@ -59,19 +70,30 @@ public class ExpensesProvider extends ContentProvider {
                     EXPENSES_TABLE_NAME + "." + Expenses.CATEGORY_ID + " = " +
                     CATEGORIES_TABLE_NAME + "." + Categories._ID;
 
+    /**
+     * <p>
+     * Initializes the provider.
+     * </p>
+     *
+     * <i>Note</i>: provider is not created until a
+     * {@link android.content.ContentResolver ContentResolver} object tries to access it.
+     *
+     * @return <code>true</code> if the provider was successfully loaded, <code>false</code> otherwise
+     */
     @Override
     public boolean onCreate() {
-        nDbHelper = new ExpenseDbHelper(getContext());
+        mDbHelper = new ExpenseDbHelper(getContext());
         return true;
     }
+
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Cursor cursor;
         String table;
         String rawQuery;
-        nDatabase = nDbHelper.getReadableDatabase();
+        mDatabase = mDbHelper.getReadableDatabase();
         switch (sUriMatcher.match(uri)) {
-
+            // The incoming URI is for all of categories
             case CATEGORIES:
                 table = CATEGORIES_TABLE_NAME;
                 sortOrder = (sortOrder == null || sortOrder.isEmpty())
@@ -79,15 +101,15 @@ public class ExpensesProvider extends ContentProvider {
                         : sortOrder;
                 break;
 
-
+            // The incoming URI is for a single row from categories
             case CATEGORIES_ID:
                 table = CATEGORIES_TABLE_NAME;
-
+                // Defines selection criteria for the row to query
                 selection = Categories._ID + " = ?";
                 selectionArgs = new String[]{ uri.getLastPathSegment() };
                 break;
 
-
+            // The incoming URI is for all of expenses
             case EXPENSES:
                 table = EXPENSES_TABLE_NAME;
                 sortOrder = (sortOrder == null || sortOrder.isEmpty())
@@ -95,62 +117,82 @@ public class ExpensesProvider extends ContentProvider {
                         : sortOrder;
                 break;
 
-
+            // The incoming URI is for a single row from expenses
             case EXPENSES_ID:
                 table = EXPENSES_TABLE_NAME;
-
+                // Defines selection criteria for the row to query
                 selection = Expenses._ID + " = ?";
                 selectionArgs = new String[]{ uri.getLastPathSegment() };
                 break;
 
-
+            // The incoming URI is for all expenses with categories
             case EXPENSES_WITH_CATEGORIES:
+                /*
+                 * SELECT expenses._id, expenses.value, categories.name, expenses.date
+                 * FROM expenses JOIN categories
+                 * ON expenses.category_id = categories._id
+                 */
+                return mDatabase.rawQuery(BASE_SELECT_JOIN_EXPENSES_CATEGORIES_QUERY, null);
 
-                return nDatabase.rawQuery(BASE_SELECT_JOIN_EXPENSES_CATEGORIES_QUERY, null);
-
-
-
+            // The incoming URI is for the expenses with categories for a specific date
             case EXPENSES_WITH_CATEGORIES_DATE:
-
+                /*
+                 * SELECT expenses._id, expenses.value, categories.name, expenses.date
+                 * FROM expenses JOIN categories
+                 * ON expenses.category_id = categories._id
+                 * WHERE expense.date = ?
+                 */
                 rawQuery =
                         BASE_SELECT_JOIN_EXPENSES_CATEGORIES_QUERY + " WHERE " +
                                 EXPENSES_TABLE_NAME + "." + Expenses.DATE + " = ?";
 
-                return nDatabase.rawQuery(rawQuery, selectionArgs);
+                return mDatabase.rawQuery(rawQuery, selectionArgs);
 
-
+            // The incoming URI is for the expense values sum for a specific date range
             case EXPENSES_WITH_CATEGORIES_SUM_DATE:
-
+                /*
+                 * SELECT SUM(expenses.value) as values_sum
+                 * FROM expenses WHERE expenses.date = ?
+                 */
                 rawQuery =
                         "SELECT SUM(" + EXPENSES_TABLE_NAME + "." + Expenses.VALUE + ") as " +
                                 Expenses.VALUES_SUM + " FROM " + EXPENSES_TABLE_NAME +
                                 " WHERE " + EXPENSES_TABLE_NAME + "." + Expenses.DATE + " = ?";
 
-                return nDatabase.rawQuery(rawQuery, selectionArgs);
+                return mDatabase.rawQuery(rawQuery, selectionArgs);
 
-
+            // The incoming URI is for the expenses with categories for a specific date range
             case EXPENSES_WITH_CATEGORIES_DATE_RANGE:
-
+                /*
+                 * SELECT expenses._id, expenses.value, categories.name, expenses.date
+                 * FROM expenses JOIN categories
+                 * ON expenses.category_id = categories._id
+                 * WHERE expense.date BETWEEN ? AND ?
+                 */
                 rawQuery =
                         BASE_SELECT_JOIN_EXPENSES_CATEGORIES_QUERY + " WHERE " +
                                 EXPENSES_TABLE_NAME + "." + Expenses.DATE + " BETWEEN ? AND ?";
 
-                return nDatabase.rawQuery(rawQuery, selectionArgs);
+                return mDatabase.rawQuery(rawQuery, selectionArgs);
 
-
+            // The incoming URI is for the expense values sum for a specific date range
             case EXPENSES_WITH_CATEGORIES_SUM_DATE_RANGE:
-
+                /*
+                 * SELECT SUM(expenses.value) as values_sum
+                 * FROM expenses WHERE expense.date BETWEEN ? AND ?
+                 */
                 rawQuery =
                         "SELECT SUM(" + EXPENSES_TABLE_NAME + "." + Expenses.VALUE + ") as " +
                                 Expenses.VALUES_SUM + " FROM " + EXPENSES_TABLE_NAME +
                                 " WHERE " + EXPENSES_TABLE_NAME + "." + Expenses.DATE + " BETWEEN ? AND ?";
 
-                return nDatabase.rawQuery(rawQuery, selectionArgs);
+                return mDatabase.rawQuery(rawQuery, selectionArgs);
 
             default:
                 throw new IllegalArgumentException("Unknown Uri provided.");
         }
-        cursor = nDatabase.query(
+
+        cursor = mDatabase.query(
                 table,
                 projection,
                 selection,
@@ -163,26 +205,24 @@ public class ExpensesProvider extends ContentProvider {
         return cursor;
     }
 
-
-
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         String table;
         Uri contentUri;
         switch (sUriMatcher.match(uri)) {
-
+            // The incoming URI is for all of categories
             case CATEGORIES:
                 table = CATEGORIES_TABLE_NAME;
                 contentUri = Categories.CONTENT_URI;
                 break;
-
+            // The incoming URI is for all of expenses
             case EXPENSES:
                 table = EXPENSES_TABLE_NAME;
                 contentUri = Expenses.CONTENT_URI;
                 break;
-
+            // The incoming URI is for a single row from categories
             case CATEGORIES_ID:
-
+                // The incoming URI is for a single row from expenses
             case EXPENSES_ID:
                 throw new UnsupportedOperationException("Inserting rows with specified IDs is forbidden.");
             case EXPENSES_WITH_CATEGORIES:
@@ -195,9 +235,9 @@ public class ExpensesProvider extends ContentProvider {
                 throw new IllegalArgumentException("Unknown Uri provided.");
         }
 
-        nDatabase = nDbHelper.getWritableDatabase();
+        mDatabase = mDbHelper.getWritableDatabase();
 
-        long newRowID = nDatabase.insert(
+        long newRowID = mDatabase.insert(
                 table,
                 null,
                 values
@@ -212,25 +252,25 @@ public class ExpensesProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         String table;
         switch (sUriMatcher.match(uri)) {
-
+            // The incoming URI is for a single row from categories
             case CATEGORIES_ID:
                 table = CATEGORIES_TABLE_NAME;
-
+                // Defines selection criteria for the row to delete
                 selection = Categories._ID + " = ?";
                 selectionArgs = new String[]{ uri.getLastPathSegment() };
                 break;
-
+            // The incoming URI is for all of expenses
             case EXPENSES:
                 table = EXPENSES_TABLE_NAME;
                 break;
-
+            // The incoming URI is for a single row from expenses
             case EXPENSES_ID:
                 table = EXPENSES_TABLE_NAME;
-
+                // Defines selection criteria for the row to delete
                 selection = Expenses._ID + " = ?";
                 selectionArgs = new String[]{ uri.getLastPathSegment() };
                 break;
-
+            // The incoming URI is for all of categories
             case CATEGORIES:
                 throw new UnsupportedOperationException("Removing multiple rows from the table is forbidden.");
             case EXPENSES_WITH_CATEGORIES:
@@ -243,9 +283,9 @@ public class ExpensesProvider extends ContentProvider {
                 throw new IllegalArgumentException("Unknown Uri provided.");
         }
 
-        nDatabase = nDbHelper.getWritableDatabase();
+        mDatabase = mDbHelper.getWritableDatabase();
 
-        return nDatabase.delete(
+        return mDatabase.delete(
                 table,
                 selection,
                 selectionArgs
@@ -256,22 +296,23 @@ public class ExpensesProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         String table;
         switch (sUriMatcher.match(uri)) {
-
+            // The incoming URI is for a single row from categories
             case CATEGORIES_ID:
                 table = CATEGORIES_TABLE_NAME;
-
+                // Defines selection criteria for the row to delete
                 selection = Categories._ID + " = ?";
                 selectionArgs = new String[]{ uri.getLastPathSegment() };
                 break;
-
+            // The incoming URI is for a single row from expenses
             case EXPENSES_ID:
                 table = EXPENSES_TABLE_NAME;
-
+                // Defines selection criteria for the row to delete
                 selection = Expenses._ID + " = ?";
                 selectionArgs = new String[]{ uri.getLastPathSegment() };
                 break;
-
+            // The incoming URI is for all of categories
             case CATEGORIES:
+                // The incoming URI is for all of expenses
             case EXPENSES:
                 throw new UnsupportedOperationException("Updating multiple table rows is forbidden.");
             case EXPENSES_WITH_CATEGORIES:
@@ -284,15 +325,16 @@ public class ExpensesProvider extends ContentProvider {
                 throw new IllegalArgumentException("Unknown Uri provided.");
         }
 
-        nDatabase = nDbHelper.getWritableDatabase();
+        mDatabase = mDbHelper.getWritableDatabase();
 
-        return nDatabase.update(
+        return mDatabase.update(
                 table,
                 values,
                 selection,
                 selectionArgs
         );
     }
+
     @Override
     public String getType(Uri uri) {
         final int match = sUriMatcher.match(uri);

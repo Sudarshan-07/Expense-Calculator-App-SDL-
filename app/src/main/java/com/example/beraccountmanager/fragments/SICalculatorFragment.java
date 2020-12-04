@@ -29,6 +29,13 @@ public class SICalculatorFragment extends Fragment {
         sicalc=getView().findViewById(R.id.calculate_si);
         screen=getView().findViewById(R.id.display);
     }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.simple_interest_calculator, container, false);
+        return rootView;
+    }
     public void ButtonClickSi(View v){
         p=Double.parseDouble(principle.getText().toString());
         n=Double.parseDouble(years.getText().toString());
@@ -38,11 +45,5 @@ public class SICalculatorFragment extends Fragment {
         screen.setText(Double.toString(total_amount));
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.simple_interest_calculator, container, false);
-        return rootView;
-    }
+
 }

@@ -2,6 +2,8 @@ package com.example.beraccountmanager.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -16,7 +18,7 @@ import com.example.beraccountmanager.R;
 import java.text.DecimalFormat;
 
 
-public class ci_calculator extends Fragment {
+public class CICalculatorFragment extends Fragment {
     private EditText principle,interest,years,time_period;
     private Button cicalc;
     private TextView screen;
@@ -32,6 +34,20 @@ public class ci_calculator extends Fragment {
         time_period=getView().findViewById(R.id.time_period);
         screen=getView().findViewById(R.id.display);
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_ci_calculator, container, false);
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
     public void ButtonClickCI(View v){
         p=Double.parseDouble(principle.getText().toString());
         n=Double.parseDouble(years.getText().toString());
@@ -44,10 +60,5 @@ public class ci_calculator extends Fragment {
         screen.setText(Double.toString(Double.parseDouble(numberFormat.format(total_amount))));
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ci_calculator, container, false);
-    }
+
 }

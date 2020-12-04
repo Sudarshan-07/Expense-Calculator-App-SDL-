@@ -33,14 +33,13 @@ import com.example.beraccountmanager.R;
 import com.example.beraccountmanager.providers.ExpensesContract.Categories;
 import com.example.beraccountmanager.providers.ExpensesContract.Expenses;
 import com.example.beraccountmanager.utils.Utils;
-
 import java.util.ArrayList;
 import java.util.Date;
 
 public class AddTransactionFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>  {
     public static final String EXTRA_EDIT_EXPENSE = "com.example.beraccountmanager.edit_expense";
-    private static final int expense_loader_id = 1;
-    private static final int categories_loader_id = 0;
+    private static final int EXPENSE_LOADER_ID = 1;
+    private static final int CATEGORIES_LOADER_ID = 0;
     private EditText expense_add_edit_value,transaction_date;
     private AppCompatSpinner choose_category_spinner;
     private ProgressBar select_cat_progress_bar;
@@ -50,13 +49,14 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
     private long mExpenseCategoryId = -1;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.add_transaction_fragment, container, false);
         expense_add_edit_value = (EditText) rootView.findViewById(R.id.expense_add_edit_value);
         choose_category_spinner = (AppCompatSpinner) rootView.findViewById(R.id.choose_category_spinner);
@@ -75,9 +75,10 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
                 return false;
             }
         });
-       choose_category_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        choose_category_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                mExpenseCategoryId = id;
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -101,6 +102,8 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
         if (mExtraValue < 1) {
             getActivity().setTitle(R.string.add_transaction);
             loadCategories();
+
+            // Edit existing expense
         } else {
             getActivity().setTitle(R.string.edit_trans);
             loadExpenseData();
@@ -116,11 +119,13 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
         switch (item.getItemId()) {
             case R.id.done_add_transaction:
                 if (checkForIncorrectInput()) {
-                    
+                    // Create a new expense
                     if (mExtraValue < 1) {
-                        insertNewExpense(); // Create a new expense
+                        insertNewExpense();
+
+                        // Edit existing expense
                     } else {
-                        updateExpense(mExtraValue); // Edit existing expense
+                        updateExpense(mExtraValue);
                     }
                     getActivity().finish();
                 }
@@ -134,11 +139,31 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
             expense_add_edit_value.selectAll();
             return false;
         }
+        // Future check of other fields
+
+        return true;
+    }
+    private boolean checkValueFieldForIncorrectInput() {
+        String etValue = expense_add_edit_value.getText().toString();
+        try {
+            if (etValue.length() == 0) {
+                expense_add_edit_value.setError(getResources().getString(R.string.error_empty_field));
+                return false;
+            } else if (Float.parseFloat(etValue) == 0.00f) {
+                expense_add_edit_value.setError(getResources().getString(R.string.error_zero_value));
+                return false;
+            }
+        } catch (Exception e) {
+            expense_add_edit_value.setError(getResources().getString(R.string.error_incorrect_input));
+            return false;
+        }
         return true;
     }
     private void loadCategories() {
+        // Show the progress bar next to category spinner
         select_cat_progress_bar.setVisibility(View.VISIBLE);
-        getLoaderManager().initLoader(categories_loader_id, null, this);
+
+        getLoaderManager().initLoader(CATEGORIES_LOADER_ID, null, this);
     }
 
     private void setEditTextDefaultValue() {
@@ -146,7 +171,7 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
         expense_add_edit_value.selectAll();
     }
     private void loadExpenseData() {
-        getLoaderManager().initLoader(expense_loader_id, null, this);
+        getLoaderManager().initLoader(EXPENSE_LOADER_ID, null, this);
         loadCategories();
     }
     @Override
@@ -154,7 +179,7 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
         String[] projectionFields = null;
         Uri uri = null;
         switch (id) {
-            case expense_loader_id:
+            case EXPENSE_LOADER_ID:
                 projectionFields = new String[] {
                         Expenses._ID,
                         Expenses.VALUE,
@@ -163,7 +188,7 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
 
                 uri = ContentUris.withAppendedId(Expenses.CONTENT_URI, mExtraValue);
                 break;
-            case categories_loader_id:
+            case CATEGORIES_LOADER_ID:
                 projectionFields = new String[] {
                         Categories._ID,
                         Categories.NAME
@@ -184,16 +209,18 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
-            case expense_loader_id:
+            case EXPENSE_LOADER_ID:
                 int expenseValueIndex = data.getColumnIndex(Expenses.VALUE);
                 int expenseCategoryIdIndex = data.getColumnIndex(Expenses.CATEGORY_ID);
+
                 data.moveToFirst();
                 mExpenseCategoryId = data.getLong(expenseCategoryIdIndex);
                 updateSpinnerSelection();
+
                 expense_add_edit_value.setText(String.valueOf(data.getFloat(expenseValueIndex)));
                 expense_add_edit_value.selectAll();
                 break;
-            case categories_loader_id:
+            case CATEGORIES_LOADER_ID:
                 // Hide the progress bar next to category spinner
                 select_cat_progress_bar.setVisibility(View.GONE);
 
@@ -202,6 +229,7 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
                     // Fill the spinner with default values
                     ArrayList<String> defaultItems = new ArrayList<>();
                     defaultItems.add(getResources().getString(R.string.no_categories_string));
+
                     ArrayAdapter<String> tempAdapter = new ArrayAdapter<String>(getActivity(),
                             android.R.layout.simple_spinner_item,
                             defaultItems);
@@ -223,11 +251,11 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
-            case expense_loader_id:
+            case EXPENSE_LOADER_ID:
                 mExpenseCategoryId = -1;
                 setEditTextDefaultValue();
                 break;
-            case categories_loader_id:
+            case CATEGORIES_LOADER_ID:
                 mAdapter.swapCursor(null);
                 break;
         }
@@ -276,20 +304,5 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
                 Toast.LENGTH_SHORT).show();
     }
 
-    private boolean checkValueFieldForIncorrectInput() {
-        String etValue = expense_add_edit_value.getText().toString();
-        try {
-            if (etValue.length() == 0) {
-                expense_add_edit_value.setError(getResources().getString(R.string.error_empty_field));
-                return false;
-            } else if (Float.parseFloat(etValue) == 0.00f) {
-              expense_add_edit_value.setError(getResources().getString(R.string.error_zero_value));
-                return false;
-            }
-        } catch (Exception e) {
-            expense_add_edit_value.setError(getResources().getString(R.string.error_incorrect_input));
-            return false;
-        }
-        return true;
-    }
+
 }

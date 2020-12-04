@@ -37,14 +37,15 @@ import com.example.beraccountmanager.providers.ExpensesContract.Expenses;
 import java.util.Date;
 
 public class TodayFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
-    private static final int sum_loader_id = 0;
-    private static final int list_loader_id = 1;
+    private static final int SUM_LOADER_ID = 0;
+    private static final int LIST_LOADER_ID = 1;
 
-    private ListView expenses_view;
-    private View progressbar;
+    private ListView mExpensesView;
+    private View mProgressBar;
     private SimpleExpenseAdapter mAdapter;
-    private TextView total_exp_sum_text_view;
+    private TextView mTotalExpSumTextView;
     private TextView mTotalExpCurrencyTextView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,13 +56,14 @@ public class TodayFragment extends Fragment implements LoaderManager.LoaderCallb
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       View rootView = inflater.inflate(R.layout.fragment_today, container, false);
-        expenses_view = (ListView) rootView.findViewById(R.id.expenses_income_list_view);
-        progressbar = rootView.findViewById(R.id.expenses_progress_bar);
-        total_exp_sum_text_view = (TextView) rootView.findViewById(R.id.total_expense_sum_text_view);
-        mTotalExpCurrencyTextView = (TextView) rootView.findViewById(R.id.total_expense_currency_text_view_1);
-        expenses_view.setEmptyView(rootView.findViewById(R.id.expenses_income_empty_list_view));
-        expenses_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        View rootView = inflater.inflate(R.layout.fragment_today, container, false);
+
+        mExpensesView = (ListView) rootView.findViewById(R.id.expenses_income_list_view);
+        mProgressBar = rootView.findViewById(R.id.expenses_progress_bar);
+        mTotalExpSumTextView = (TextView) rootView.findViewById(R.id.total_expense_sum_text_view);
+       //mTotalExpCurrencyTextView = (TextView) rootView.findViewById(R.id.total_expense_currency_text_view_1);
+        mExpensesView.setEmptyView(rootView.findViewById(R.id.expenses_income_empty_list_view));
+        mExpensesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 prepareExpenseToEdit(id);
@@ -73,9 +75,10 @@ public class TodayFragment extends Fragment implements LoaderManager.LoaderCallb
                 prepareExpenseToCreate();
             }
         });
-        total_exp_sum_text_view.setText(Utils.formatToCurrency(0.0f));
 
-        registerForContextMenu(expenses_view);
+        //mTotalExpSumTextView.setText(Utils.formatToCurrency(0.0f));
+
+        registerForContextMenu(mExpensesView);
 
         return rootView;
     }
@@ -85,11 +88,12 @@ public class TodayFragment extends Fragment implements LoaderManager.LoaderCallb
         super.onActivityCreated(savedInstanceState);
         PreferenceManager.setDefaultValues(getActivity(), R.xml.currency_preference, false);
         mAdapter = new SimpleExpenseAdapter(getActivity());
-        expenses_view.setAdapter(mAdapter);
-        getLoaderManager().initLoader(sum_loader_id, null, this);
-        getLoaderManager().initLoader(list_loader_id, null, this);
+        mExpensesView.setAdapter(mAdapter);
+        getLoaderManager().initLoader(SUM_LOADER_ID, null, this);
+        getLoaderManager().initLoader(LIST_LOADER_ID, null, this);
 
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -111,7 +115,6 @@ public class TodayFragment extends Fragment implements LoaderManager.LoaderCallb
                 return super.onOptionsItemSelected(item);
         }
     }
-
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -121,7 +124,7 @@ public class TodayFragment extends Fragment implements LoaderManager.LoaderCallb
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
-            case R.id.delete_transaction:
+            case R.id.delete_expense_menu_item:
                 deleteExpense(info.id);
                 return true;
             default:
@@ -132,16 +135,17 @@ public class TodayFragment extends Fragment implements LoaderManager.LoaderCallb
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Uri uri = null;
         switch (id) {
-            case sum_loader_id:
+            case SUM_LOADER_ID:
                 uri = ExpensesWithCategories.SUM_DATE_CONTENT_URI;
                 break;
-            case list_loader_id:
+            case LIST_LOADER_ID:
                 uri = ExpensesWithCategories.DATE_CONTENT_URI;
                 break;
         }
         // Retrieve today's date string
         String today = Utils.getDateString(new Date());
         String[] selectionArgs = { today };
+
         return new CursorLoader(getActivity(),
                 uri,
                 null,
@@ -153,17 +157,16 @@ public class TodayFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()){
-            case sum_loader_id:
+            case SUM_LOADER_ID:
                 int valueSumIndex = data.getColumnIndex(Expenses.VALUES_SUM);
                 data.moveToFirst();
                 float valueSum = data.getFloat(valueSumIndex);
-                total_exp_sum_text_view.setText(Utils.formatToCurrency(valueSum));
+                mTotalExpSumTextView.setText(Utils.formatToCurrency(valueSum));
                 break;
 
-            case list_loader_id:
+            case LIST_LOADER_ID:
                 // Hide the progress bar
-                progressbar.setVisibility(View.GONE);
-
+                mProgressBar.setVisibility(View.GONE);
                 mAdapter.swapCursor(data);
                 break;
         }
@@ -171,10 +174,10 @@ public class TodayFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
-            case sum_loader_id:
-                total_exp_sum_text_view.setText(Utils.formatToCurrency(0.0f));
+            case SUM_LOADER_ID:
+                mTotalExpSumTextView.setText(Utils.formatToCurrency(0.0f));
                 break;
-            case list_loader_id:
+            case LIST_LOADER_ID:
                 mAdapter.swapCursor(null);
                 break;
         }
@@ -190,10 +193,10 @@ public class TodayFragment extends Fragment implements LoaderManager.LoaderCallb
 
     private void reloadExpenseData() {
         // Show the progress bar
-        progressbar.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
         // Reload data by restarting the cursor loaders
-        getLoaderManager().restartLoader(list_loader_id, null, this);
-        getLoaderManager().restartLoader(sum_loader_id, null, this);
+        getLoaderManager().restartLoader(LIST_LOADER_ID, null, this);
+        getLoaderManager().restartLoader(SUM_LOADER_ID, null, this);
     }
     private int deleteSingleExpense(long expenseId) {
         Uri uri = ContentUris.withAppendedId(Expenses.CONTENT_URI, expenseId);

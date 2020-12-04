@@ -28,8 +28,8 @@ import com.example.beraccountmanager.providers.ExpensesContract.Categories;
 
 public class CategoryEditFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String EXTRA_EDIT_CATEGORY = "com.example.beraccountmanager.edit_category";
-    private EditText catgnameEditText;
-    private long extravalue;
+    private EditText mCatNameEditText;
+    private long mExtraValue;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,14 +40,15 @@ public class CategoryEditFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.edit_category_fragment, container, false);
-        catgnameEditText = (EditText) rootView.findViewById(R.id.category_name_edit_text);
+        mCatNameEditText = (EditText) rootView.findViewById(R.id.category_name_edit_text);
         // Set listener on Done (submit) button on keyboard clicked
-        catgnameEditText.setOnKeyListener(new View.OnKeyListener() {
+        mCatNameEditText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    checkEditTextForEmptyField(catgnameEditText);
+                    checkEditTextForEmptyField(mCatNameEditText);
                     return true;
                 }
                 return false;
@@ -60,9 +61,9 @@ public class CategoryEditFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        extravalue = getActivity().getIntent().getLongExtra(EXTRA_EDIT_CATEGORY, -1);
+        mExtraValue = getActivity().getIntent().getLongExtra(EXTRA_EDIT_CATEGORY, -1);
         // Create a new category
-        if (extravalue < 1) {
+        if (mExtraValue < 1) {
             getActivity().setTitle(R.string.add_category);
         }
         // Edit existing category
@@ -82,14 +83,14 @@ public class CategoryEditFragment extends Fragment implements LoaderManager.Load
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.done_add_category:
-                if (checkEditTextForEmptyField(catgnameEditText)) {
+                if (checkEditTextForEmptyField(mCatNameEditText)) {
                     // Create a new category
-                    if (extravalue < 1) {
+                    if (mExtraValue < 1) {
                         insertNewCategory();
 
                         // Edit existing category
                     } else {
-                        updateCategory(extravalue);
+                        updateCategory(mExtraValue);
                     }
                     getActivity().finish();
                 }
@@ -104,7 +105,7 @@ public class CategoryEditFragment extends Fragment implements LoaderManager.Load
         String inputText = editText.getText().toString().trim();
         if (inputText.length() == 0) {
             editText.setError(getResources().getString(R.string.error_empty_field));
-            catgnameEditText.selectAll();
+            mCatNameEditText.selectAll();
             return false;
         } else {
             return true;
@@ -121,7 +122,7 @@ public class CategoryEditFragment extends Fragment implements LoaderManager.Load
                 Categories._ID,
                 Categories.NAME
         };
-        Uri singleCategoryUri = ContentUris.withAppendedId(Categories.CONTENT_URI, extravalue);
+        Uri singleCategoryUri = ContentUris.withAppendedId(Categories.CONTENT_URI, mExtraValue);
 
         return new CursorLoader(getActivity(),
                 singleCategoryUri,
@@ -137,17 +138,17 @@ public class CategoryEditFragment extends Fragment implements LoaderManager.Load
         int categoryNameIndex = data.getColumnIndex(Categories.NAME);
         data.moveToFirst();
         String categoryName = data.getString(categoryNameIndex);
-        catgnameEditText.setText(categoryName);
+        mCatNameEditText.setText(categoryName);
     }
 
     @Override
     public void onLoaderReset(Loader loader) {
-        catgnameEditText.setText("");
+        mCatNameEditText.setText("");
     }
 
     private void insertNewCategory() {
         ContentValues insertValues = new ContentValues();
-        insertValues.put(Categories.NAME, catgnameEditText.getText().toString());
+        insertValues.put(Categories.NAME, mCatNameEditText.getText().toString());
 
         getActivity().getContentResolver().insert(
                 Categories.CONTENT_URI,
@@ -161,7 +162,7 @@ public class CategoryEditFragment extends Fragment implements LoaderManager.Load
 
     private void updateCategory(long id) {
         ContentValues updateValues = new ContentValues();
-        updateValues.put(Categories.NAME, catgnameEditText.getText().toString());
+        updateValues.put(Categories.NAME, mCatNameEditText.getText().toString());
 
         Uri categoryUri = ContentUris.withAppendedId(Categories.CONTENT_URI, id);
 

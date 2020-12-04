@@ -32,9 +32,9 @@ import com.example.beraccountmanager.providers.ExpensesContract.Categories;
 import com.example.beraccountmanager.providers.ExpensesContract.Expenses;
 
 public class CategoryFragment extends Fragment  implements LoaderManager.LoaderCallbacks<Cursor>{
-    private ListView categoriesview;
+    private ListView mCategoriesView;
     private SimpleCursorAdapter mAdapter;
-    private View progressbar;
+    private View mProgressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,13 +43,14 @@ public class CategoryFragment extends Fragment  implements LoaderManager.LoaderC
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_category,container, false);
-        categoriesview = (ListView) rootView.findViewById(R.id.categories_list_view);
-        progressbar = rootView.findViewById(R.id.categories_progress_bar);
-        categoriesview.setEmptyView(rootView.findViewById(R.id.categories_empty_list_view));
-        categoriesview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mCategoriesView = (ListView) rootView.findViewById(R.id.categories_list_view);
+        mProgressBar = rootView.findViewById(R.id.categories_progress_bar);
+        mCategoriesView.setEmptyView(rootView.findViewById(R.id.categories_empty_list_view));
+        mCategoriesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 prepareCategoryToEdit(id);
@@ -61,7 +62,7 @@ public class CategoryFragment extends Fragment  implements LoaderManager.LoaderC
                 prepareCategoryToCreate();
             }
         });
-        registerForContextMenu(categoriesview);
+        registerForContextMenu(mCategoriesView);
         return rootView;
     }
     @Override
@@ -71,7 +72,7 @@ public class CategoryFragment extends Fragment  implements LoaderManager.LoaderC
                 R.layout.category_list_item, null,
                 new String[] { Categories.NAME },
                 new int[] { R.id.category_name_list_item}, 0);
-        categoriesview.setAdapter(mAdapter);
+        mCategoriesView.setAdapter(mAdapter);
 
         // Initialize the CursorLoader
         getLoaderManager().initLoader(0, null, this);
@@ -101,6 +102,17 @@ public class CategoryFragment extends Fragment  implements LoaderManager.LoaderC
         getActivity().getMenuInflater().inflate(R.menu.delete_category, menu);
     }
     @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.delete_category:
+                deleteCategory(info.id);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projectionFields = new String[] {
                 Categories._ID,
@@ -118,7 +130,7 @@ public class CategoryFragment extends Fragment  implements LoaderManager.LoaderC
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         // Hide the progress bar
-        progressbar.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.GONE);
 
         mAdapter.swapCursor(data);
     }
@@ -128,7 +140,7 @@ public class CategoryFragment extends Fragment  implements LoaderManager.LoaderC
     }
     private void reloadCategoryList() {
         // Show the progress bar
-        progressbar.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
         // Reload data by restarting the cursor loader
         getLoaderManager().restartLoader(0, null, this);
     }
