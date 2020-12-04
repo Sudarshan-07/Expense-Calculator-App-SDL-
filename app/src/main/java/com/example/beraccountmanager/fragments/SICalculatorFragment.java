@@ -23,27 +23,30 @@ public class SICalculatorFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        principle=getView().findViewById(R.id.principal_amount);
-        interest=getView().findViewById(R.id.simple_interest);
-        years=getView().findViewById(R.id.number_of_years);
-        sicalc=getView().findViewById(R.id.calculate_si);
-        screen=getView().findViewById(R.id.display);
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.simple_interest_calculator, container, false);
+        principle=rootView.findViewById(R.id.principal_amount);
+        interest=rootView.findViewById(R.id.simple_interest);
+        years=rootView.findViewById(R.id.number_of_years);
+        sicalc=rootView.findViewById(R.id.calculate_si);
+        screen=rootView.findViewById(R.id.display);
+        sicalc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                p=Double.parseDouble(principle.getText().toString());
+                n=Double.parseDouble(years.getText().toString());
+                r=Double.parseDouble(interest.getText().toString());
+                total_interest=(p*n*r)/100;
+                total_amount=(p+total_interest);
+                screen.setText(Double.toString(total_amount));
+            }
+        });
         return rootView;
     }
-    public void ButtonClickSi(View v){
-        p=Double.parseDouble(principle.getText().toString());
-        n=Double.parseDouble(years.getText().toString());
-        r=Double.parseDouble(interest.getText().toString());
-        total_interest=(p*n*r)/100;
-        total_amount=(p+total_interest);
-        screen.setText(Double.toString(total_amount));
-    }
-
 
 }

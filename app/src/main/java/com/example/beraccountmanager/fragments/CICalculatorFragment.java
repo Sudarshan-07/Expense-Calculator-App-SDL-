@@ -27,12 +27,7 @@ public class CICalculatorFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        principle=getView().findViewById(R.id.principal_amount);
-        interest=getView().findViewById(R.id.simple_interest);
-        years=getView().findViewById(R.id.number_of_years);
-        cicalc=getView().findViewById(R.id.calculate_ci);
-        time_period=getView().findViewById(R.id.time_period);
-        screen=getView().findViewById(R.id.display);
+
     }
 
     @Override
@@ -40,6 +35,26 @@ public class CICalculatorFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_ci_calculator, container, false);
+        principle=rootView.findViewById(R.id.principal_amount);
+        interest=rootView.findViewById(R.id.simple_interest);
+        years=rootView.findViewById(R.id.number_of_years);
+        cicalc=rootView.findViewById(R.id.calculate_ci);
+        time_period=rootView.findViewById(R.id.time_period);
+        screen=rootView.findViewById(R.id.display);
+        cicalc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                p=Double.parseDouble(principle.getText().toString());
+                n=Double.parseDouble(years.getText().toString());
+                r=Double.parseDouble(interest.getText().toString());
+                t=Double.parseDouble(time_period.getText().toString());
+                r=r/100;
+                a=Math.pow((1+r/n),(n*t));
+                total_amount=a*p;
+                DecimalFormat numberFormat =new DecimalFormat("#.000");
+                screen.setText(Double.toString(Double.parseDouble(numberFormat.format(total_amount))));
+            }
+        });
         return rootView;
     }
 
@@ -48,17 +63,5 @@ public class CICalculatorFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
     }
-    public void ButtonClickCI(View v){
-        p=Double.parseDouble(principle.getText().toString());
-        n=Double.parseDouble(years.getText().toString());
-        r=Double.parseDouble(interest.getText().toString());
-        t=Double.parseDouble(time_period.getText().toString());
-        r=r/100;
-        a=Math.pow((1+r/n),(n*t));
-        total_amount=a*p;
-        DecimalFormat numberFormat =new DecimalFormat("#.000");
-        screen.setText(Double.toString(Double.parseDouble(numberFormat.format(total_amount))));
-    }
-
 
 }
