@@ -24,7 +24,7 @@
 
     <!--fragment_today-->
     <string name="today_total">Todays Total</string>
-    <string name="today_expenses" >Todays Expenses and Income</string>
+    <string name="today_expenses">Todays Expenses and Income</string>
     <string name="add_expense_income">New Expense/Income</string>
 
     <!--fragment_report_income and fragment_report_expense-->
