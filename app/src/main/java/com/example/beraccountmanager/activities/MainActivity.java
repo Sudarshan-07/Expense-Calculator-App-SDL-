@@ -117,6 +117,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.simple_calc:
                 loadFragment(CalculatorFragment.class, menuItem.getItemId(), menuItem.getTitle());
+                break;
             case R.id.SI_calc:
                 loadFragment(SICalculatorFragment.class, menuItem.getItemId(), menuItem.getTitle());
                 break;
