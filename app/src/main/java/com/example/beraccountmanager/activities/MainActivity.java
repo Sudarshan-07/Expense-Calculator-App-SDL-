@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.example.beraccountmanager.R;
 import com.example.beraccountmanager.fragments.CICalculatorFragment;
 import com.example.beraccountmanager.fragments.CalculatorFragment;
+import com.example.beraccountmanager.fragments.CategoryFragment;
 import com.example.beraccountmanager.fragments.ExpenseReportFragment;
 import com.example.beraccountmanager.fragments.SICalculatorFragment;
 import com.example.beraccountmanager.fragments.TodayFragment;
@@ -31,6 +32,7 @@ public class MainActivity extends BaseActivity {
     protected int getLayoutResId() {
         return R.layout.activity_main;
     }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -41,6 +43,7 @@ public class MainActivity extends BaseActivity {
         setupDrawerContent(mNavDrawer);
         loadTodayFragment();
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -57,6 +60,7 @@ public class MainActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -81,11 +85,12 @@ public class MainActivity extends BaseActivity {
             } else {
                 super.onBackPressed();
             }
-        } }
+        }
+    }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
         return new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
-                R.string.drawer_open,  R.string.drawer_close);
+                R.string.drawer_open, R.string.drawer_close);
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -100,9 +105,10 @@ public class MainActivity extends BaseActivity {
 
                 });
     }
+
     private void selectDrawerItem(MenuItem menuItem) {
         closeNavigationDrawer();
-        switch(menuItem.getItemId()) {
+        switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 loadFragment(TodayFragment.class, menuItem.getItemId(), menuItem.getTitle());
                 break;
@@ -117,6 +123,10 @@ public class MainActivity extends BaseActivity {
             case R.id.CI_calc:
                 loadFragment(CICalculatorFragment.class, menuItem.getItemId(), menuItem.getTitle());
                 break;
+            case R.id.exp_categories:
+                loadFragment(CategoryFragment.class, menuItem.getItemId(), menuItem.getTitle());
+                break;
+
 //            case R.id.nav_sett:
 //                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 //                break;
@@ -124,6 +134,7 @@ public class MainActivity extends BaseActivity {
                 loadFragment(TodayFragment.class, menuItem.getItemId(), menuItem.getTitle());
         }
     }
+
     private boolean closeNavigationDrawer() {
         boolean drawerIsOpen = mDrawerLayout.isDrawerOpen(GravityCompat.START);
         if (drawerIsOpen) {
@@ -135,6 +146,7 @@ public class MainActivity extends BaseActivity {
     public void hideNavigationBar() {
         closeNavigationDrawer();
     }
+
     private void loadFragment(Class fragmentClass, @IdRes int navDrawerCheckedItemId,
                               CharSequence toolbarTitle) {
         Fragment fragment = null;
@@ -148,6 +160,7 @@ public class MainActivity extends BaseActivity {
         mNavDrawer.setCheckedItem(navDrawerCheckedItemId);
         setTitle(toolbarTitle);
     }
+
     private void loadTodayFragment() {
         loadFragment(TodayFragment.class, R.id.nav_home,
                 getResources().getString(R.string.group1_Home));

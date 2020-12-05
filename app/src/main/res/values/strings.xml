@@ -53,7 +53,7 @@
 
     <!--Group1-->
     <string name="group1_Home">Home</string>
-    <string name="reports">expense reports</string>
+    <string name="reports">Expense reports</string>
     <string name="group1_calc">Calculators</string>
     <string name="simple_calc">Simple Calculator</string>
     <string name="interest_calculator">Interest Calculator</string>
