@@ -12,11 +12,15 @@ import android.widget.TextView;
 
 import com.example.beraccountmanager.R;
 
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Scriptable;
+
 
 public class CalculatorFragment extends Fragment {
-    private TextView screen;
-    private Button del,result,add,mul,div,sub,percent,one,two,three,four,five,six,seven,eight,nine,zero,dot,ac,power;
-    private String input,answer;
+    private TextView input_screen,output_screen;
+    private Button equal,add,mul,div,sub,percent,one,two,three,four,five,six,seven,eight,nine,zero,dot,ac,bracket;
+    private String process;
+    boolean checkBracket=false;
 
 
     @Override
@@ -31,16 +35,7 @@ public class CalculatorFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.simple_calculator, container, false);
-        screen=rootView.findViewById(R.id.display);
-        ac=rootView.findViewById(R.id.allclear);
-        power=rootView.findViewById(R.id.power);
-        del=rootView.findViewById(R.id.buttonDel);
-        result=rootView.findViewById(R.id.buttoneql);
-        add=rootView.findViewById(R.id.button_add);
-        mul=rootView.findViewById(R.id.buttonmul);
-        div=rootView.findViewById(R.id.buttondiv);
-        sub=rootView.findViewById(R.id.buttonsub);
-        percent=rootView.findViewById(R.id.percent);
+
         one=rootView.findViewById(R.id.button1);
         two=rootView.findViewById(R.id.button2);
         three=rootView.findViewById(R.id.button3);
@@ -51,118 +46,210 @@ public class CalculatorFragment extends Fragment {
         eight=rootView.findViewById(R.id.button8);
         nine=rootView.findViewById(R.id.button9);
         zero=rootView.findViewById(R.id.button0);
+
+        add=rootView.findViewById(R.id.buttonPlus);
+        mul=rootView.findViewById(R.id.buttonMul);
+        div=rootView.findViewById(R.id.buttonDiv);
+        sub=rootView.findViewById(R.id.buttonMinus);
+
+
+        ac=rootView.findViewById(R.id.allClear);
+        equal=rootView.findViewById(R.id.buttoneql);
+        percent=rootView.findViewById(R.id.percent);
         dot=rootView.findViewById(R.id.buttonDot);
+        bracket=rootView.findViewById(R.id.brackets);
+
+        input_screen=rootView.findViewById(R.id.display1);
+        output_screen=rootView.findViewById(R.id.display2);
+
+        ac.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                input_screen.setText("");
+                output_screen.setText("");
+            }
+        });
+
+
+        zero.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = input_screen.getText().toString();
+                input_screen.setText(process + "0");
+            }
+        });
+
+        one.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = input_screen.getText().toString();
+                input_screen.setText(process + "1");
+            }
+        });
+
+        two.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = input_screen.getText().toString();
+                input_screen.setText(process + "2");
+            }
+        });
+
+        three.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = input_screen.getText().toString();
+                input_screen.setText(process + "3");
+            }
+        });
+
+        four.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = input_screen.getText().toString();
+                input_screen.setText(process + "4");
+            }
+        });
+
+        five.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = input_screen.getText().toString();
+                input_screen.setText(process + "5");
+            }
+        });
+
+        six.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = input_screen.getText().toString();
+                input_screen.setText(process + "6");
+            }
+        });
+
+        seven.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = input_screen.getText().toString();
+                input_screen.setText(process + "7");
+            }
+        });
+
+        eight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = input_screen.getText().toString();
+                input_screen.setText(process + "8");
+            }
+        });
+
+        nine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = input_screen.getText().toString();
+                input_screen.setText(process + "9");
+            }
+        });
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = input_screen.getText().toString();
+                input_screen.setText(process + "+");
+            }
+        });
+
+        sub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = input_screen.getText().toString();
+                input_screen.setText(process + "-");
+            }
+        });
+
+
+        mul.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = input_screen.getText().toString();
+                input_screen.setText(process + "*");
+            }
+        });
+
+        div.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = input_screen.getText().toString();
+                input_screen.setText(process + "/");
+            }
+        });
+
+        dot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = input_screen.getText().toString();
+                input_screen.setText(process + ".");
+            }
+        });
+
+        percent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = input_screen.getText().toString();
+                input_screen.setText(process + "%");
+            }
+        });
+
+        bracket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (checkBracket){
+                    process = input_screen.getText().toString();
+                    input_screen.setText(process + ")");
+                    checkBracket = false;
+                }else{
+                    process = input_screen.getText().toString();
+                    input_screen.setText(process + "(");
+                    checkBracket = true;
+                }
+
+            }
+        });
+
+        equal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                process = input_screen.getText().toString();
+
+                process = process.replaceAll("%","/100");
+
+                Context rhino = Context.enter();
+
+                rhino.setOptimizationLevel(-1);
+
+                String finalResult = "";
+
+                try {
+                    Scriptable scriptable = rhino.initStandardObjects();
+                    finalResult = rhino.evaluateString(scriptable,process,"javascript",1,null).toString();
+                }catch (Exception e){
+                    finalResult="0";
+                }
+                //to remove last digit .0 from integer result
+                String n[]=finalResult.split("\\.");
+                if(n.length>1){
+                    if(n[1].equals("0")){
+                        finalResult=n[0];
+                    }
+                }
+
+                output_screen.setText(finalResult);
+            }
+        });
+
         return rootView;
 
     }
-    public void ButtonClick(View view){
-        Button button=(Button) view;
-        String data=button.getText().toString();
-        switch(data){
-            case "AC":
-                input="";
-                break;
-            case"x":
-                Solve();
-                input+="*";
-                break;
-            case "^":
-                Solve();
-                input+="^";
-                break;
-            case "=":
-                Solve();
-                answer=input;
-                break;
-            case "BACK":
-                String newText=input.substring(0,input.length()-1);
-                input=newText;
-                break;
-            default:
-                if(input==null){
-                    input="";
-                }
-                if(data.equals("+") || data.equals("-") || data.equals("/")){
-                    Solve();
-                }
-                input+=data;
-        }
-        screen.setText(input);
-    }
-    private void Solve(){
-        if(input.split("\\*").length==2) {
-            String number[] = input.split("\\*");
-            try {
-                double mul = Double.parseDouble(number[0]) * Double.parseDouble(number[1]);
-                input = mul+"";
-            }catch(Exception e){
-                //error
-            }
-        }
-        else if(input.split("/").length==2) {
-            String number[] = input.split("/");
-            try {
-                double div = Double.parseDouble(number[0]) / Double.parseDouble(number[1]);
-                input = div+"";
-            }catch(Exception e){
-                //error
-            }
-        }
-        else if(input.split("\\+").length==2) {
-            String number[] = input.split("\\+");
-            try {
-                double addition = Double.parseDouble(number[0]) + Double.parseDouble(number[1]);
-                input =addition+"";
-            }catch(Exception e){
-                //error
-            }
-        }
-        else if(input.split("-").length>1) {
-            String number[] = input.split("-");
-            //to subtract from negative number
-            if(number[0]=="" && number.length==2){
-                number[0]=0+"";
-            }
-            try {
-                double subtraction = 0;
-                if(number.length==2){
-                    subtraction=Double.parseDouble(number[0])-Double.parseDouble(number[1]);
-                }
-                else if(number.length==3){
-                    subtraction=Double.parseDouble((number[1]))-Double.parseDouble(number[2]);
-                }
-                input = subtraction+"";
-            }catch(Exception e){
-                //error
-            }
-        }
-        else if(input.split("\\^").length==2) {
-            String number[] = input.split("\\^");
-            try {
-                double pow = Math.pow(Double.parseDouble(number[0]),Double.parseDouble(number[1]));
-                input = pow+"";
-            }catch(Exception e){
-                //error
-            }
-        }
-        else if(input.split("%").length==2) {
-            String number[] = input.split("%");
-            try {
-                double per = Double.parseDouble(String.valueOf(number))/100;
-                input = per+"";
-            }catch(Exception e){
-                //error
-            }
-        }
-        //to remove last digit .0 from integer result
-        String n[]=input.split("\\.");
-        if(n.length>1){
-            if(n[1].equals("0")){
-                input=n[0];
-            }
-        }
-        screen.setText(input);
-    }
-
 
 }
