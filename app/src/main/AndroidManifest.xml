@@ -4,50 +4,54 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo1"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.MainActivity"
+        <activity android:name=".activities.SplashScreen"><intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter></activity>
+        <activity
+            android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop">
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-
-<!--        <activity android:name=".activities.SettingsActivity"-->
-<!--            android:screenOrientation="portrait"-->
-<!--            android:parentActivityName=".activities.MainActivity">-->
-<!--            &lt;!&ndash; Parent activity meta-data to support Android 4.0 and lower &ndash;&gt;-->
-<!--            <meta-data android:name="android.support.PARENT_ACTIVITY"-->
-<!--                android:value=".activities.MainActivity"/>-->
-<!--        </activity>-->
-
-        <activity android:name=".activities.CategoryEditActivity"
+        </activity> <!-- <activity android:name=".activities.SettingsActivity" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:parentActivityName=".activities.MainActivity"> -->
+        <!-- &lt;!&ndash; Parent activity meta-data to support Android 4.0 and lower &ndash;&gt; -->
+        <!-- <meta-data android:name="android.support.PARENT_ACTIVITY" -->
+        <!-- android:value=".activities.MainActivity"/> -->
+        <!-- </activity> -->
+        <activity
+            android:name=".activities.CategoryEditActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible"
-            android:parentActivityName=".activities.MainActivity">
-            <!-- Parent activity meta-data to support Android 4.0 and lower -->
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity"/>
-        </activity>
+            android:windowSoftInputMode="stateVisible">
 
-        <activity android:name=".activities.TransactionEditActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible"
-            android:parentActivityName=".activities.MainActivity">
             <!-- Parent activity meta-data to support Android 4.0 and lower -->
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
+        <activity
+            android:name=".activities.TransactionEditActivity"
+            android:parentActivityName=".activities.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible">
+
+            <!-- Parent activity meta-data to support Android 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
         </activity>
 
         <provider
-            android:authorities="com.example.beraccountmanager.provider"
-            android:name=".providers.ExpensesProvider" />
+            android:name=".providers.ExpensesProvider"
+            android:authorities="com.example.beraccountmanager.provider" />
     </application>
+
 </manifest>
