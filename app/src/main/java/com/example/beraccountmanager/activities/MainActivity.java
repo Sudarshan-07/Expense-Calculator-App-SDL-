@@ -2,6 +2,7 @@ package com.example.beraccountmanager.activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -26,6 +27,7 @@ public class MainActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
+    String URL = "https://economictimes.indiatimes.com/wealth/invest/top-10-investment-options/articleshow/64066079.cms";
 
     @Override
     @LayoutRes
@@ -126,6 +128,9 @@ public class MainActivity extends BaseActivity {
             case R.id.exp_categories:
                 loadFragment(CategoryFragment.class, menuItem.getItemId(), menuItem.getTitle());
                 break;
+            case R.id.nav_io:
+                openBrowser();
+                break;
 
 //            case R.id.nav_sett:
 //                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
@@ -134,6 +139,14 @@ public class MainActivity extends BaseActivity {
                 loadFragment(TodayFragment.class, menuItem.getItemId(), menuItem.getTitle());
         }
     }
+
+    private void openBrowser() {
+        if (!URL.startsWith("http://") && !URL.startsWith("https://"))
+            URL = "http://" + URL;
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
+        startActivity(browserIntent);
+    }
+
 
     private boolean closeNavigationDrawer() {
         boolean drawerIsOpen = mDrawerLayout.isDrawerOpen(GravityCompat.START);
