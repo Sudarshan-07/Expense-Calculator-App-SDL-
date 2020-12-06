@@ -1,5 +1,7 @@
 package com.example.beraccountmanager.fragments;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
@@ -22,10 +25,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -33,37 +38,49 @@ import com.example.beraccountmanager.R;
 import com.example.beraccountmanager.providers.ExpensesContract.Categories;
 import com.example.beraccountmanager.providers.ExpensesContract.Expenses;
 import com.example.beraccountmanager.utils.Utils;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
-public class AddTransactionFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>  {
+public class AddTransactionFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String EXTRA_EDIT_EXPENSE = "com.example.beraccountmanager.edit_expense";
     private static final int EXPENSE_LOADER_ID = 1;
     private static final int CATEGORIES_LOADER_ID = 0;
-    private EditText expense_add_edit_value,transaction_date;
+    private EditText expense_add_edit_value, transaction_date;
     private AppCompatSpinner choose_category_spinner;
     private ProgressBar select_cat_progress_bar;
     private RadioGroup radio_group;
     private SimpleCursorAdapter mAdapter;
     private long mExtraValue;
     private long mExpenseCategoryId = -1;
+    final DialogFragment dialogFragment = new DatePickerDialogTheme4();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.add_transaction_fragment, container, false);
+        transaction_date = (EditText) rootView.findViewById(R.id.transaction_date);
         expense_add_edit_value = (EditText) rootView.findViewById(R.id.expense_add_edit_value);
         choose_category_spinner = (AppCompatSpinner) rootView.findViewById(R.id.choose_category_spinner);
         radio_group = rootView.findViewById(R.id.radio_group);
         select_cat_progress_bar = rootView.findViewById(R.id.select_cat_progress_bar);
 
         setEditTextDefaultValue();
+
+        transaction_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogFragment.show(getFragmentManager(), "theme 4");
+            }
+        });
 
         expense_add_edit_value.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -80,11 +97,50 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 mExpenseCategoryId = id;
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
         return rootView;
+    }
+
+    public static class DatePickerDialogTheme4 extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+        String date;
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
+            //these three lines are used to for cancel set previous dates
+            calendar.add(Calendar.DATE, 0);
+            Date newDate = calendar.getTime();
+            datePickerDialog.getDatePicker().setMinDate(newDate.getTime() - (newDate.getTime() % (24 * 60 * 60 * 1000)));
+            //here it ends
+            return datePickerDialog;
+        }
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            int month2 = month + 1;
+            String formattedMonth = "" + month2;
+            String formattedDayOfMonth = "" + day;
+
+            if (month2 < 10) {
+
+                formattedMonth = "0" + month2;
+            }
+            if (day < 10) {
+
+                formattedDayOfMonth = "0" + day;
+            }
+            EditText editText = getActivity().findViewById(R.id.transaction_date);
+            editText.setText(formattedDayOfMonth + "/" + formattedMonth + "/" + year);
+            date = editText.getText().toString().trim();
+        }
     }
 
     @Override
@@ -93,8 +149,8 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
         mAdapter = new SimpleCursorAdapter(getActivity(),
                 android.R.layout.simple_spinner_item,
                 null,
-                new String[] { Categories.NAME },
-                new int[] { android.R.id.text1 },
+                new String[]{Categories.NAME},
+                new int[]{android.R.id.text1},
                 0);
         mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         choose_category_spinner.setAdapter(mAdapter);
@@ -109,11 +165,13 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
             loadExpenseData();
         }
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.done_adding_transaction, menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -134,15 +192,16 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
                 return super.onOptionsItemSelected(item);
         }
     }
+
     private boolean checkForIncorrectInput() {
         if (!checkValueFieldForIncorrectInput()) {
             expense_add_edit_value.selectAll();
             return false;
         }
         // Future check of other fields
-
         return true;
     }
+
     private boolean checkValueFieldForIncorrectInput() {
         String etValue = expense_add_edit_value.getText().toString();
         try {
@@ -159,6 +218,7 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
         }
         return true;
     }
+
     private void loadCategories() {
         // Show the progress bar next to category spinner
         select_cat_progress_bar.setVisibility(View.VISIBLE);
@@ -170,17 +230,19 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
         expense_add_edit_value.setText(String.valueOf(0));
         expense_add_edit_value.selectAll();
     }
+
     private void loadExpenseData() {
         getLoaderManager().initLoader(EXPENSE_LOADER_ID, null, this);
         loadCategories();
     }
+
     @Override
     public CursorLoader onCreateLoader(int id, Bundle args) {
         String[] projectionFields = null;
         Uri uri = null;
         switch (id) {
             case EXPENSE_LOADER_ID:
-                projectionFields = new String[] {
+                projectionFields = new String[]{
                         Expenses._ID,
                         Expenses.VALUE,
                         Expenses.CATEGORY_ID
@@ -189,7 +251,7 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
                 uri = ContentUris.withAppendedId(Expenses.CONTENT_URI, mExtraValue);
                 break;
             case CATEGORIES_LOADER_ID:
-                projectionFields = new String[] {
+                projectionFields = new String[]{
                         Categories._ID,
                         Categories.NAME
                 };
@@ -206,6 +268,7 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
                 null
         );
     }
+
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
@@ -248,6 +311,7 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
                 break;
         }
     }
+
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
@@ -260,6 +324,7 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
                 break;
         }
     }
+
     private void updateSpinnerSelection() {
         choose_category_spinner.setSelection(0);
         for (int pos = 0; pos < mAdapter.getCount(); ++pos) {
@@ -270,6 +335,7 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
             }
         }
     }
+
     private void insertNewExpense() {
         ContentValues insertValues = new ContentValues();
         insertValues.put(Expenses.VALUE, Float.parseFloat(expense_add_edit_value.getText().toString()));
@@ -285,6 +351,7 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
                 getResources().getString(R.string.done),
                 Toast.LENGTH_SHORT).show();
     }
+
     private void updateExpense(long id) {
         ContentValues updateValues = new ContentValues();
         updateValues.put(Expenses.VALUE, Float.parseFloat(expense_add_edit_value.getText().toString()));

@@ -35,7 +35,7 @@
 
     <!--add_transaction_fragment-->
     <string name="enter_amount">Enter Amount</string>
-    <string name="enter_transaction_date">Enter Transaction Date</string>
+    <string name="enter_transaction_date">Transaction Date(dd/mm/yyyy)</string>
     <string name="category">Category</string>
     <string name="type_of_transaction">Enter The Type of Transaction</string>
     <string name="debit">Debit / Spent</string>
