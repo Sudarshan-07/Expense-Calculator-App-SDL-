@@ -28,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -39,6 +40,8 @@ import com.example.beraccountmanager.providers.ExpensesContract.Categories;
 import com.example.beraccountmanager.providers.ExpensesContract.Expenses;
 import com.example.beraccountmanager.utils.Utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -54,6 +57,7 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
     private SimpleCursorAdapter mAdapter;
     private long mExtraValue;
     private long mExpenseCategoryId = -1;
+    private RadioButton rb1, rb2;
     final DialogFragment dialogFragment = new DatePickerDialogTheme4();
 
     @Override
@@ -72,7 +76,8 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
         choose_category_spinner = (AppCompatSpinner) rootView.findViewById(R.id.choose_category_spinner);
         radio_group = rootView.findViewById(R.id.radio_group);
         select_cat_progress_bar = rootView.findViewById(R.id.select_cat_progress_bar);
-
+        rb1 = rootView.findViewById(R.id.rb1);
+        rb2 = rootView.findViewById(R.id.rb2);
         setEditTextDefaultValue();
 
         transaction_date.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +86,17 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
                 dialogFragment.show(getFragmentManager(), "theme 4");
             }
         });
+        radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (rb1.isChecked()) {
 
+                }
+                if (rb2.isChecked()) {
+
+                }
+            }
+        });
         expense_add_edit_value.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent event) {
@@ -118,7 +133,8 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
             //these three lines are used to for cancel set previous dates
             calendar.add(Calendar.DATE, 0);
             Date newDate = calendar.getTime();
-            datePickerDialog.getDatePicker().setMinDate(newDate.getTime() - (newDate.getTime() % (24 * 60 * 60 * 1000)));
+            /*datePickerDialog.getDatePicker().setMinDate(newDate.getTime() - (newDate.getTime() % (24 * 60 * 60 * 1000)));
+            Use above method to disable past dates*/
             //here it ends
             return datePickerDialog;
         }
@@ -337,9 +353,17 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
     }
 
     private void insertNewExpense() {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        Date t_date = new Date();
+        try {
+            String t_date2 = (transaction_date.getText().toString());
+            t_date = format.parse(t_date2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         ContentValues insertValues = new ContentValues();
         insertValues.put(Expenses.VALUE, Float.parseFloat(expense_add_edit_value.getText().toString()));
-        insertValues.put(Expenses.DATE, Utils.getDateString(new Date())); // Put current date (today)
+        insertValues.put(Expenses.DATE, Utils.getDateString(t_date)); // Put current date (today)
         insertValues.put(Expenses.CATEGORY_ID, mExpenseCategoryId);
 
         getActivity().getContentResolver().insert(

@@ -70,16 +70,6 @@ public class ExpensesProvider extends ContentProvider {
                     EXPENSES_TABLE_NAME + "." + Expenses.CATEGORY_ID + " = " +
                     CATEGORIES_TABLE_NAME + "." + Categories._ID;
 
-    /**
-     * <p>
-     * Initializes the provider.
-     * </p>
-     *
-     * <i>Note</i>: provider is not created until a
-     * {@link android.content.ContentResolver ContentResolver} object tries to access it.
-     *
-     * @return <code>true</code> if the provider was successfully loaded, <code>false</code> otherwise
-     */
     @Override
     public boolean onCreate() {
         mDbHelper = new ExpenseDbHelper(getContext());
