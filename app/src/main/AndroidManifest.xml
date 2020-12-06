@@ -19,7 +19,8 @@
             android:label="@string/app_name"
             android:launchMode="singleTop">
             android:screenOrientation="portrait">
-        </activity> <!-- <activity android:name=".activities.SettingsActivity" -->
+        </activity>
+        <!-- <activity android:name=".activities.SettingsActivity" -->
         <!-- android:screenOrientation="portrait" -->
         <!-- android:parentActivityName=".activities.MainActivity"> -->
         <!-- &lt;!&ndash; Parent activity meta-data to support Android 4.0 and lower &ndash;&gt; -->

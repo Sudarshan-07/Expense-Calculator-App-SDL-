@@ -5,25 +5,32 @@
         android:checkableBehavior="single">
 
         <item
+            android:icon="@drawable/ic_baseline_home_24"
             android:id="@+id/nav_home"
             android:title="@string/group1_Home" />
         <item
+            android:icon="@drawable/report"
             android:id="@+id/nav_reports"
             android:title="@string/reports" />
         <item
+            android:icon="@drawable/category"
             android:id="@+id/exp_categories"
             android:title="@string/exp_category" />
 
         <item
+            android:icon="@drawable/ic_baseline_calculate_24"
             android:id="@+id/simple_calc"
             android:title="@string/simple_calc" />
         <item
+            android:icon="@drawable/si_calc"
             android:id="@+id/SI_calc"
             android:title="Simple Interest Calculator" />
         <item
+            android:icon="@drawable/ci_calc"
             android:id="@+id/CI_calc"
             android:title="Compound Interest Calculator" />
         <item
+            android:icon="@drawable/investment"
             android:id="@+id/nav_io"
             android:title="@string/group1_io" />
 
@@ -33,9 +40,11 @@
         android:id="@+id/group2"
         android:checkableBehavior="none">
         <item
+            android:icon="@drawable/ic_baseline_app_settings_alt_24"
             android:id="@+id/nav_sett"
             android:title="@string/group1_sett" />
         <item
+            android:icon="@drawable/ic_baseline_connect_without_contact_24"
             android:id="@+id/nav_contact"
             android:title="@string/group1_contact" />
     </group>
