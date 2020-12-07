@@ -12,16 +12,12 @@ import com.example.beraccountmanager.utils.Utils;
 import com.twotoasters.sectioncursoradapter.SectionCursorAdapter;
 import com.example.beraccountmanager.providers.ExpensesContract;
     public class SectionExpenseAdapter extends SectionCursorAdapter {
-        private String usedcurrency;
+
 
         public SectionExpenseAdapter(Context context) {
             super(context, null, 0);
         }
 
-        public void setCurrency(String currency) {
-            usedcurrency = currency;
-            notifyDataSetChanged();
-        }
 
         @SuppressLint("RestrictedApi")
         @Override
@@ -59,7 +55,7 @@ import com.example.beraccountmanager.providers.ExpensesContract;
             // Populate views with extracted values
             tvExpenseValue.setText(Utils.formatToCurrency(expValue));
             tvExpenseCatName.setText(categoryName);
-            tvExpenseCurrency.setText(usedcurrency);
+
         }
     }
 

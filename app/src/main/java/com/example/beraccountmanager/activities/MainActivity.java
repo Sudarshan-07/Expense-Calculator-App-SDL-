@@ -37,7 +37,6 @@ public class MainActivity extends BaseActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mNavDrawer = (NavigationView) findViewById(R.id.hamburger_menu);
         mDrawerToggle = setupDrawerToggle();
@@ -46,20 +45,17 @@ public class MainActivity extends BaseActivity {
         loadTodayFragment();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        closeNavigationDrawer();
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        closeNavigationDrawer();
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -80,8 +76,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         if (!closeNavigationDrawer()) {
-            Fragment currentFragment = getSupportFragmentManager()
-                    .findFragmentById(R.id.content_frame);
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
             if (!(currentFragment instanceof TodayFragment)) {
                 loadTodayFragment();
             } else {
@@ -96,7 +91,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
-
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -132,10 +126,6 @@ public class MainActivity extends BaseActivity {
             case R.id.nav_io:
                 openBrowser();
                 break;
-
-//            case R.id.nav_sett:
-//                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-//                break;
             default:
                 loadFragment(TodayFragment.class, menuItem.getItemId(), menuItem.getTitle());
         }

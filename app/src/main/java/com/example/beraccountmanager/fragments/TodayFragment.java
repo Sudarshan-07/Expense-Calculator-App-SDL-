@@ -4,18 +4,9 @@ import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
-
-import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,12 +19,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+
 import com.example.beraccountmanager.R;
 import com.example.beraccountmanager.activities.TransactionEditActivity;
 import com.example.beraccountmanager.adapters.SimpleExpenseAdapter;
-import com.example.beraccountmanager.utils.Utils;
-import com.example.beraccountmanager.providers.ExpensesContract.ExpensesWithCategories;
 import com.example.beraccountmanager.providers.ExpensesContract.Expenses;
+import com.example.beraccountmanager.providers.ExpensesContract.ExpensesWithCategories;
+import com.example.beraccountmanager.utils.Utils;
+
 import java.util.Date;
 
 public class TodayFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -61,7 +59,7 @@ public class TodayFragment extends Fragment implements LoaderManager.LoaderCallb
         mExpensesView = (ListView) rootView.findViewById(R.id.expenses_income_list_view);
         mProgressBar = rootView.findViewById(R.id.expenses_progress_bar);
         mTotalExpSumTextView = (TextView) rootView.findViewById(R.id.total_expense_sum_text_view);
-       //mTotalExpCurrencyTextView = (TextView) rootView.findViewById(R.id.total_expense_currency_text_view_1);
+        mTotalExpCurrencyTextView = (TextView) rootView.findViewById(R.id.total_expense_currency_text_view_1);
         mExpensesView.setEmptyView(rootView.findViewById(R.id.expenses_income_empty_list_view));
         mExpensesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -76,7 +74,7 @@ public class TodayFragment extends Fragment implements LoaderManager.LoaderCallb
             }
         });
 
-        //mTotalExpSumTextView.setText(Utils.formatToCurrency(0.0f));
+        mTotalExpSumTextView.setText(Utils.formatToCurrency(0.0f));
 
         registerForContextMenu(mExpensesView);
 
@@ -86,7 +84,7 @@ public class TodayFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        PreferenceManager.setDefaultValues(getActivity(), R.xml.currency_preference, false);
+
         mAdapter = new SimpleExpenseAdapter(getActivity());
         mExpensesView.setAdapter(mAdapter);
         getLoaderManager().initLoader(SUM_LOADER_ID, null, this);
@@ -98,7 +96,6 @@ public class TodayFragment extends Fragment implements LoaderManager.LoaderCallb
     public void onResume() {
         super.onResume();
         reloadExpenseData();
-        //reloadSharedPreferences();
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -183,13 +180,7 @@ public class TodayFragment extends Fragment implements LoaderManager.LoaderCallb
         }
     }
 
-//    private void reloadSharedPreferences() {
-//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-//        String prefCurrency = sharedPref.getString(SettingsFragment.KEY_PREF_CURRENCY, "");
-//
-//        mTotalExpCurrencyTextView.setText(prefCurrency);
-//        mAdapter.setCurrency(prefCurrency);
-//    }
+
 
     private void reloadExpenseData() {
         // Show the progress bar

@@ -9,14 +9,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.example.beraccountmanager.db.ExpenseDbHelper;
 import com.example.beraccountmanager.providers.ExpensesContract.Categories;
 import com.example.beraccountmanager.providers.ExpensesContract.Expenses;
-
-
 
 import static com.example.beraccountmanager.db.ExpenseDbHelper.CATEGORIES_TABLE_NAME;
 import static com.example.beraccountmanager.db.ExpenseDbHelper.EXPENSES_TABLE_NAME;
@@ -56,11 +51,6 @@ public class ExpensesProvider extends ContentProvider {
                 EXPENSES_WITH_CATEGORIES_SUM_DATE_RANGE);
     }
 
-    /*
-     * SELECT expenses._id, expenses.value, categories.name, expenses.date
-     * FROM expenses JOIN categories
-     * ON expenses.category_id = categories._id
-     */
     private static final String BASE_SELECT_JOIN_EXPENSES_CATEGORIES_QUERY =
             "SELECT " + EXPENSES_TABLE_NAME + "." + Expenses._ID + ", " +
                     EXPENSES_TABLE_NAME + "." + Expenses.VALUE + ", " +
@@ -117,21 +107,10 @@ public class ExpensesProvider extends ContentProvider {
 
             // The incoming URI is for all expenses with categories
             case EXPENSES_WITH_CATEGORIES:
-                /*
-                 * SELECT expenses._id, expenses.value, categories.name, expenses.date
-                 * FROM expenses JOIN categories
-                 * ON expenses.category_id = categories._id
-                 */
                 return mDatabase.rawQuery(BASE_SELECT_JOIN_EXPENSES_CATEGORIES_QUERY, null);
 
             // The incoming URI is for the expenses with categories for a specific date
             case EXPENSES_WITH_CATEGORIES_DATE:
-                /*
-                 * SELECT expenses._id, expenses.value, categories.name, expenses.date
-                 * FROM expenses JOIN categories
-                 * ON expenses.category_id = categories._id
-                 * WHERE expense.date = ?
-                 */
                 rawQuery =
                         BASE_SELECT_JOIN_EXPENSES_CATEGORIES_QUERY + " WHERE " +
                                 EXPENSES_TABLE_NAME + "." + Expenses.DATE + " = ?";
@@ -140,10 +119,6 @@ public class ExpensesProvider extends ContentProvider {
 
             // The incoming URI is for the expense values sum for a specific date range
             case EXPENSES_WITH_CATEGORIES_SUM_DATE:
-                /*
-                 * SELECT SUM(expenses.value) as values_sum
-                 * FROM expenses WHERE expenses.date = ?
-                 */
                 rawQuery =
                         "SELECT SUM(" + EXPENSES_TABLE_NAME + "." + Expenses.VALUE + ") as " +
                                 Expenses.VALUES_SUM + " FROM " + EXPENSES_TABLE_NAME +
@@ -153,12 +128,6 @@ public class ExpensesProvider extends ContentProvider {
 
             // The incoming URI is for the expenses with categories for a specific date range
             case EXPENSES_WITH_CATEGORIES_DATE_RANGE:
-                /*
-                 * SELECT expenses._id, expenses.value, categories.name, expenses.date
-                 * FROM expenses JOIN categories
-                 * ON expenses.category_id = categories._id
-                 * WHERE expense.date BETWEEN ? AND ?
-                 */
                 rawQuery =
                         BASE_SELECT_JOIN_EXPENSES_CATEGORIES_QUERY + " WHERE " +
                                 EXPENSES_TABLE_NAME + "." + Expenses.DATE + " BETWEEN ? AND ?";
@@ -167,10 +136,6 @@ public class ExpensesProvider extends ContentProvider {
 
             // The incoming URI is for the expense values sum for a specific date range
             case EXPENSES_WITH_CATEGORIES_SUM_DATE_RANGE:
-                /*
-                 * SELECT SUM(expenses.value) as values_sum
-                 * FROM expenses WHERE expense.date BETWEEN ? AND ?
-                 */
                 rawQuery =
                         "SELECT SUM(" + EXPENSES_TABLE_NAME + "." + Expenses.VALUE + ") as " +
                                 Expenses.VALUES_SUM + " FROM " + EXPENSES_TABLE_NAME +
@@ -215,12 +180,7 @@ public class ExpensesProvider extends ContentProvider {
                 // The incoming URI is for a single row from expenses
             case EXPENSES_ID:
                 throw new UnsupportedOperationException("Inserting rows with specified IDs is forbidden.");
-            case EXPENSES_WITH_CATEGORIES:
-            case EXPENSES_WITH_CATEGORIES_DATE:
-            case EXPENSES_WITH_CATEGORIES_DATE_RANGE:
-            case EXPENSES_WITH_CATEGORIES_SUM_DATE:
-            case EXPENSES_WITH_CATEGORIES_SUM_DATE_RANGE:
-                throw new UnsupportedOperationException("Modifying joined results is forbidden.");
+
             default:
                 throw new IllegalArgumentException("Unknown Uri provided.");
         }
@@ -263,12 +223,7 @@ public class ExpensesProvider extends ContentProvider {
             // The incoming URI is for all of categories
             case CATEGORIES:
                 throw new UnsupportedOperationException("Removing multiple rows from the table is forbidden.");
-            case EXPENSES_WITH_CATEGORIES:
-            case EXPENSES_WITH_CATEGORIES_DATE:
-            case EXPENSES_WITH_CATEGORIES_DATE_RANGE:
-            case EXPENSES_WITH_CATEGORIES_SUM_DATE:
-            case EXPENSES_WITH_CATEGORIES_SUM_DATE_RANGE:
-                throw new UnsupportedOperationException("Modifying joined results is forbidden.");
+
             default:
                 throw new IllegalArgumentException("Unknown Uri provided.");
         }
@@ -305,12 +260,8 @@ public class ExpensesProvider extends ContentProvider {
                 // The incoming URI is for all of expenses
             case EXPENSES:
                 throw new UnsupportedOperationException("Updating multiple table rows is forbidden.");
-            case EXPENSES_WITH_CATEGORIES:
-            case EXPENSES_WITH_CATEGORIES_DATE:
-            case EXPENSES_WITH_CATEGORIES_DATE_RANGE:
-            case EXPENSES_WITH_CATEGORIES_SUM_DATE:
-            case EXPENSES_WITH_CATEGORIES_SUM_DATE_RANGE:
-                throw new UnsupportedOperationException("Modifying joined results is forbidden.");
+       case EXPENSES_WITH_CATEGORIES:
+
             default:
                 throw new IllegalArgumentException("Unknown Uri provided.");
         }
@@ -327,24 +278,6 @@ public class ExpensesProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        final int match = sUriMatcher.match(uri);
-        switch (match) {
-            case CATEGORIES:
-                return Categories.CONTENT_TYPE;
-            case CATEGORIES_ID:
-                return Categories.CONTENT_ITEM_TYPE;
-            case EXPENSES:
-                return Expenses.CONTENT_TYPE;
-            case EXPENSES_ID:
-                return Expenses.CONTENT_ITEM_TYPE;
-            case EXPENSES_WITH_CATEGORIES:
-            case EXPENSES_WITH_CATEGORIES_DATE:
-            case EXPENSES_WITH_CATEGORIES_DATE_RANGE:
-            case EXPENSES_WITH_CATEGORIES_SUM_DATE:
-            case EXPENSES_WITH_CATEGORIES_SUM_DATE_RANGE:
-                return ExpensesContract.ExpensesWithCategories.CONTENT_TYPE;
-            default:
-                return null;
-        }
+        return null;
     }
 }

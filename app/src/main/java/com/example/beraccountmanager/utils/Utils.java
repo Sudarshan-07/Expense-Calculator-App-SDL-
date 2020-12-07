@@ -39,10 +39,9 @@ public class Utils {
         }
     }
 
-    public static String formatToCurrency(float value) {
-        final NumberFormat numberFormat = NumberFormat.getNumberInstance();
-        numberFormat.setMaximumFractionDigits(2);
-        numberFormat.setMinimumFractionDigits(2);
-        return numberFormat.format(value);
-    }
+   public static String formatToCurrency(float value) { final NumberFormat numberFormat = NumberFormat.getNumberInstance();
+       numberFormat.setMaximumFractionDigits(2);
+       numberFormat.setMinimumFractionDigits(2);
+       return numberFormat.format(value);
+   }
 }

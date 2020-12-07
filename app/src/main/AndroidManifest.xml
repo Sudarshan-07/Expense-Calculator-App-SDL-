@@ -20,36 +20,19 @@
             android:launchMode="singleTop">
             android:screenOrientation="portrait">
         </activity>
-        <!-- <activity android:name=".activities.SettingsActivity" -->
-        <!-- android:screenOrientation="portrait" -->
-        <!-- android:parentActivityName=".activities.MainActivity"> -->
-        <!-- &lt;!&ndash; Parent activity meta-data to support Android 4.0 and lower &ndash;&gt; -->
-        <!-- <meta-data android:name="android.support.PARENT_ACTIVITY" -->
-        <!-- android:value=".activities.MainActivity"/> -->
-        <!-- </activity> -->
+
         <activity
             android:name=".activities.CategoryEditActivity"
             android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible">
-
-            <!-- Parent activity meta-data to support Android 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
         </activity>
         <activity
             android:name=".activities.TransactionEditActivity"
             android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible">
-
-            <!-- Parent activity meta-data to support Android 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
         </activity>
-
         <provider
             android:name=".providers.ExpensesProvider"
             android:authorities="com.example.beraccountmanager.provider" />

@@ -7,15 +7,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
-
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,9 +22,15 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import com.example.beraccountmanager.R;
 import com.example.beraccountmanager.providers.ExpensesContract.Categories;
@@ -79,7 +76,6 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
         rb1 = rootView.findViewById(R.id.rb1);
         rb2 = rootView.findViewById(R.id.rb2);
         setEditTextDefaultValue();
-
         transaction_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,12 +85,8 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
         radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (rb1.isChecked()) {
-
-                }
-                if (rb2.isChecked()) {
-
-                }
+                if (rb1.isChecked()) { }
+                if (rb2.isChecked()) { }
             }
         });
         expense_add_edit_value.setOnKeyListener(new View.OnKeyListener() {
@@ -112,10 +104,8 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 mExpenseCategoryId = id;
             }
-
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
         return rootView;
     }
@@ -144,13 +134,10 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
             int month2 = month + 1;
             String formattedMonth = "" + month2;
             String formattedDayOfMonth = "" + day;
-
             if (month2 < 10) {
-
                 formattedMonth = "0" + month2;
             }
             if (day < 10) {
-
                 formattedDayOfMonth = "0" + day;
             }
             EditText editText = getActivity().findViewById(R.id.transaction_date);
@@ -174,8 +161,6 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
         if (mExtraValue < 1) {
             getActivity().setTitle(R.string.add_transaction);
             loadCategories();
-
-            // Edit existing expense
         } else {
             getActivity().setTitle(R.string.edit_trans);
             loadExpenseData();
@@ -196,7 +181,6 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
                     // Create a new expense
                     if (mExtraValue < 1) {
                         insertNewExpense();
-
                         // Edit existing expense
                     } else {
                         updateExpense(mExtraValue);

@@ -1,9 +1,8 @@
 package com.example.beraccountmanager.activities;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+
+import androidx.appcompat.app.ActionBar;
 
 import com.example.beraccountmanager.fragments.AddTransactionFragment;
 
@@ -18,8 +17,7 @@ public class TransactionEditActivity extends BaseActivity {
     private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            // Show the Up button in the action bar (toolbar).
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true); // Show the Up button in the action bar (toolbar).
         }
     }
 }

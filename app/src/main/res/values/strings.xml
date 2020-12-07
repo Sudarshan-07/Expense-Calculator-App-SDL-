@@ -24,8 +24,8 @@
 
     <!--fragment_today-->
     <string name="today_total">Todays Total</string>
-    <string name="today_expenses">Todays Expenses and Income</string>
-    <string name="add_expense_income">New Expense/Income</string>
+    <string name="today_expenses">Todays Expenses</string>
+    <string name="add_expense_income">New Expense</string>
 
     <!--fragment_report_income and fragment_report_expense-->
     <string name="total_string">Total</string>
@@ -113,16 +113,7 @@
         <item>Ukrainian Hryvnia</item>
         <item>Russian Rouble</item>
     </string-array>
-    <string-array name="pref_currency_values">
-        <item>INR</item>
-        <item>USD</item>
-        <item>EUR</item>
-        <item>GBP</item>
-        <item>CAD</item>
-        <item>AUD</item>
-        <item>UAH</item>
-        <item>RUB</item>
-    </string-array>
+
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

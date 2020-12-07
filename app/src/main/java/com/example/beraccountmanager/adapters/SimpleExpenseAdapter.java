@@ -12,16 +12,13 @@ import com.example.beraccountmanager.utils.Utils;
 import com.example.beraccountmanager.R;
 
 public class SimpleExpenseAdapter extends CursorAdapter {
-    private String mCurrency;
+
 
     public SimpleExpenseAdapter(Context context) {
         super(context, null, 0);
     }
 
-    public void setCurrency(String currency) {
-        mCurrency = currency;
-        notifyDataSetChanged();
-    }
+
 
     // The newView method is used to inflate a new view and return it
     @Override
@@ -44,6 +41,6 @@ public class SimpleExpenseAdapter extends CursorAdapter {
         // Populate views with extracted values
         tvExpenseValue.setText(Utils.formatToCurrency(expValue));
         tvExpenseCatName.setText(categoryName);
-        tvExpenseCurrency.setText(mCurrency);
+
     }
 }

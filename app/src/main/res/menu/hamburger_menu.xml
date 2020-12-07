@@ -40,10 +40,6 @@
         android:id="@+id/group2"
         android:checkableBehavior="none">
         <item
-            android:icon="@drawable/ic_baseline_app_settings_alt_24"
-            android:id="@+id/nav_sett"
-            android:title="@string/group1_sett" />
-        <item
             android:icon="@drawable/ic_baseline_connect_without_contact_24"
             android:id="@+id/nav_contact"
             android:title="@string/group1_contact" />

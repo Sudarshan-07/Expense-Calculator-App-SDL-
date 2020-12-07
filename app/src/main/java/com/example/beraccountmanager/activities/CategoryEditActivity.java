@@ -1,17 +1,14 @@
 package com.example.beraccountmanager.activities;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
-import com.example.beraccountmanager.fragments.AddTransactionFragment;
+import androidx.appcompat.app.ActionBar;
+
 import com.example.beraccountmanager.fragments.CategoryEditFragment;
 
 public class CategoryEditActivity extends BaseActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         insertFragment(new CategoryEditFragment());
         setupActionBar();

@@ -2,18 +2,9 @@ package com.example.beraccountmanager.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
-
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,12 +16,18 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+
 import com.example.beraccountmanager.R;
 import com.example.beraccountmanager.activities.MainActivity;
 import com.example.beraccountmanager.adapters.SectionExpenseAdapter;
-import com.example.beraccountmanager.utils.Utils;
-import com.example.beraccountmanager.providers.ExpensesContract.ExpensesWithCategories;
 import com.example.beraccountmanager.providers.ExpensesContract.Expenses;
+import com.example.beraccountmanager.providers.ExpensesContract.ExpensesWithCategories;
+import com.example.beraccountmanager.utils.Utils;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -83,7 +80,7 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
     public void onResume() {
         super.onResume();
         reloadReportData();
-        //reloadSharedPreferences();
+
     }
 
     @Override
@@ -188,13 +185,7 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
     }
-//    private void reloadSharedPreferences() {
-//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-//        String prefCurrency = sharedPref.getString(SettingsFragment.KEY_PREF_CURRENCY, "");
-//
-//        mTotalCurrencyTextView.setText(prefCurrency);
-//        mAdapter.setCurrency(prefCurrency);
-//    }
+
 
     private void reloadReportData() {
         // Show the progress bar

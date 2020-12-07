@@ -7,13 +7,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
-
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,6 +18,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import com.example.beraccountmanager.R;
 import com.example.beraccountmanager.activities.CategoryEditActivity;
@@ -45,7 +44,6 @@ public class CategoryFragment extends Fragment  implements LoaderManager.LoaderC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_category,container, false);
         mCategoriesView = (ListView) rootView.findViewById(R.id.categories_list_view);
         mProgressBar = rootView.findViewById(R.id.categories_progress_bar);
@@ -79,7 +77,7 @@ public class CategoryFragment extends Fragment  implements LoaderManager.LoaderC
     }
     @Override
     public void onResume() {
-        super.onResume();
+       super.onResume();
         reloadCategoryList();
     }
     @Override
