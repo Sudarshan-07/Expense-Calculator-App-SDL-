@@ -22,7 +22,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
-                android:textSize="18sp"
+                android:textSize="22dp"
+                android:textStyle="bold"
                 android:text="@string/today_total" />
 
             <View
@@ -113,7 +114,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
-                android:textSize="18sp"
+                android:textSize="22dp"
+                android:textStyle="bold"
                 android:text="@string/today_expenses" />
 
             <View
@@ -163,7 +165,7 @@
 
             <Button
                 android:id="@+id/add_expense_button_if_empty_list"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/add_expense_income"/>
 
