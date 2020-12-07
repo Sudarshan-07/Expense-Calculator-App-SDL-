@@ -18,7 +18,7 @@ import org.mozilla.javascript.Scriptable;
 
 public class CalculatorFragment extends Fragment {
     private TextView input_screen,output_screen;
-    private Button equal,add,mul,div,sub,percent,one,two,three,four,five,six,seven,eight,nine,zero,dot,ac,bracket;
+    private Button equal,back,add,mul,div,sub,percent,one,two,three,four,five,six,seven,eight,nine,zero,dot,ac,bracket;
     private String process;
     boolean checkBracket=false;
 
@@ -58,6 +58,7 @@ public class CalculatorFragment extends Fragment {
         percent=rootView.findViewById(R.id.percent);
         dot=rootView.findViewById(R.id.buttonDot);
         bracket=rootView.findViewById(R.id.brackets);
+        back=rootView.findViewById(R.id.backspace);
 
         input_screen=rootView.findViewById(R.id.display1);
         output_screen=rootView.findViewById(R.id.display2);
@@ -197,6 +198,16 @@ public class CalculatorFragment extends Fragment {
             public void onClick(View v) {
                 process = input_screen.getText().toString();
                 input_screen.setText(process + "%");
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String str=input_screen.getText().toString();
+                str=str.substring(0,str.length()-1);
+                input_screen.setText(str);
+                output_screen.setText("");
             }
         });
 
