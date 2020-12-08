@@ -2,7 +2,7 @@
 <resources>
     <string name="calc_si">Calculate Simple Interest</string>
     <string name="calc_ci">Calculate Compound Interest</string>
-    <string name="principal">Enter Principal Amount</string>
-    <string name="simple_interest">Enter Interest Percentage per Year</string>
-    <string name="years">Enter Number of Years</string>
+    <string name="principal">Enter Principal Amount:</string>
+    <string name="simple_interest">Enter Interest Percentage Per Year:</string>
+    <string name="years">Enter Number Of Years:</string>
 </resources>

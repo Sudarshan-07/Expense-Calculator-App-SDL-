@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.beraccountmanager.R;
+import com.example.beraccountmanager.fragments.AboutUSFragment;
 import com.example.beraccountmanager.fragments.CICalculatorFragment;
 import com.example.beraccountmanager.fragments.CalculatorFragment;
 import com.example.beraccountmanager.fragments.CategoryFragment;
@@ -125,6 +126,9 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.nav_io:
                 openBrowser();
+                break;
+            case R.id.nav_contact:
+                loadFragment(AboutUSFragment.class, menuItem.getItemId(), menuItem.getTitle());
                 break;
             default:
                 loadFragment(TodayFragment.class, menuItem.getItemId(), menuItem.getTitle());

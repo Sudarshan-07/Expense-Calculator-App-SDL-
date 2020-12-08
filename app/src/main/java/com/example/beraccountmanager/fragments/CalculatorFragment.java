@@ -205,9 +205,14 @@ public class CalculatorFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String str=input_screen.getText().toString();
-                str=str.substring(0,str.length()-1);
-                input_screen.setText(str);
-                output_screen.setText("");
+                if(str.length()>1) {
+                    str = str.substring(0, str.length() - 1);
+                    input_screen.setText(str);
+                    output_screen.setText("");
+                }else if (str.length()<=1){
+                    input_screen.setText("");
+                    output_screen.setText("");
+                }
             }
         });
 

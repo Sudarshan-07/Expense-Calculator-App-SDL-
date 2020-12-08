@@ -38,12 +38,16 @@ public class SICalculatorFragment extends Fragment {
         sicalc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                p=Double.parseDouble(principle.getText().toString());
-                n=Double.parseDouble(years.getText().toString());
-                r=Double.parseDouble(interest.getText().toString());
-                total_interest=(p*n*r)/100;
-                total_amount=(p+total_interest);
-                screen.setText(Double.toString(total_amount));
+                try {
+                    p = Double.parseDouble(principle.getText().toString());
+                    n = Double.parseDouble(years.getText().toString());
+                    r = Double.parseDouble(interest.getText().toString());
+                    total_interest = (p * n * r) / 100;
+                    total_amount = (p + total_interest);
+                    screen.setText(Double.toString(total_amount));
+                }catch(Exception e){
+                    //error toggle
+                }
             }
         });
         return rootView;

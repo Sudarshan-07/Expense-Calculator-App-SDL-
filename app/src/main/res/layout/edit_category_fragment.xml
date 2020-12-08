@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
             android:text="@string/cat_name"
-            android:textSize="18sp" />
+            android:textSize="22sp" />
 
         <View
             android:layout_width="match_parent"
