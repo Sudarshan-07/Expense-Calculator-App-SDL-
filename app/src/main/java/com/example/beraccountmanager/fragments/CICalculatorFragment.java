@@ -44,15 +44,19 @@ public class CICalculatorFragment extends Fragment {
         cicalc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                p=Double.parseDouble(principle.getText().toString());
-                n=Double.parseDouble(years.getText().toString());
-                r=Double.parseDouble(interest.getText().toString());
-                t=Double.parseDouble(time_period.getText().toString());
-                r=r/100;
-                a=Math.pow((1+r/n),(n*t));
-                total_amount=a*p;
-                DecimalFormat numberFormat =new DecimalFormat("#.000");
-                screen.setText(Double.toString(Double.parseDouble(numberFormat.format(total_amount))));
+                try {
+                    p = Double.parseDouble(principle.getText().toString());
+                    n = Double.parseDouble(years.getText().toString());
+                    r = Double.parseDouble(interest.getText().toString());
+                    t = Double.parseDouble(time_period.getText().toString());
+                    r = r / 100;
+                    a = Math.pow((1 + r / n), (n * t));
+                    total_amount = a * p;
+                    DecimalFormat numberFormat = new DecimalFormat("#.000");
+                    screen.setText(Double.toString(Double.parseDouble(numberFormat.format(total_amount))));
+                }catch(Exception e){
+                    //Toggle error
+                }
             }
         });
         return rootView;
