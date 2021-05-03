@@ -71,10 +71,10 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
         transaction_date = (EditText) rootView.findViewById(R.id.transaction_date);
         expense_add_edit_value = (EditText) rootView.findViewById(R.id.expense_add_edit_value);
         choose_category_spinner = (AppCompatSpinner) rootView.findViewById(R.id.choose_category_spinner);
-        radio_group = rootView.findViewById(R.id.radio_group);
         select_cat_progress_bar = rootView.findViewById(R.id.select_cat_progress_bar);
-        rb1 = rootView.findViewById(R.id.rb1);
-        rb2 = rootView.findViewById(R.id.rb2);
+        //radio_group = rootView.findViewById(R.id.radio_group);
+        //rb1 = rootView.findViewById(R.id.rb1);
+        //rb2 = rootView.findViewById(R.id.rb2);
         setEditTextDefaultValue();
         transaction_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,13 +82,13 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
                 dialogFragment.show(getFragmentManager(), "theme 4");
             }
         });
-        radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (rb1.isChecked()) { }
-                if (rb2.isChecked()) { }
-            }
-        });
+//        radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                if (rb1.isChecked()) { }
+//                if (rb2.isChecked()) { }
+//            }
+//        });
         expense_add_edit_value.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent event) {
