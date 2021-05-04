@@ -75,9 +75,11 @@
     <TextView
         android:id="@+id/display"
         android:layout_width="match_parent"
-        android:layout_height="101dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:gravity="center"
-        android:hint="Total amount after Compound Interest"
+        android:hint="Total amount"
         android:textSize="30sp" />
 
 

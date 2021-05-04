@@ -46,11 +46,11 @@ public class MainActivity extends BaseActivity {
         loadTodayFragment();
     }
 
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        closeNavigationDrawer();
-//    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        closeNavigationDrawer();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

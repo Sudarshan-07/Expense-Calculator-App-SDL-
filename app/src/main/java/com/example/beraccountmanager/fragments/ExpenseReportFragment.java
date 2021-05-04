@@ -33,7 +33,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-public class ExpenseReportFragment extends Fragment  implements LoaderManager.LoaderCallbacks<Cursor>,
+public class ExpenseReportFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
         PopupMenu.OnMenuItemClickListener {
     private static final int SUM_LOADER_ID = 0;
     private static final int LIST_LOADER_ID = 1;
@@ -53,6 +53,7 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,6 +67,7 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
         mTotalValueTextView.setText(Utils.formatToCurrency(0.0f));
         return rootView;
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -101,6 +103,7 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
                 return super.onOptionsItemSelected(item);
         }
     }
+
     public void showPopupMenu(View v) {
         PopupMenu popup = new PopupMenu(getActivity(), v);
         popup.setOnMenuItemClickListener(ExpenseReportFragment.this);
@@ -109,6 +112,7 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
         inflater.inflate(R.menu.filter_by_date_menu, popup.getMenu());
         popup.show();
     }
+
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         ((MainActivity) getActivity()).hideNavigationBar();
@@ -132,6 +136,7 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
                 return false;
         }
     }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         int reportType = args.getInt(REPORT_TYPE);
@@ -163,6 +168,7 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
                 null
         );
     }
+
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
@@ -181,6 +187,7 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
                 break;
         }
     }
+
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
@@ -198,7 +205,7 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
         String today = Utils.getDateString(new Date());
         getActivity().setTitle(getString(R.string.filter_by_today));
 
-        String[] selectionArgs = { today };
+        String[] selectionArgs = {today};
 
         restartLoaders(DATE_REPORT, selectionArgs);
     }
@@ -213,7 +220,7 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
 
         getActivity().setTitle(getString(R.string.filter_by_week));
 
-        String[] selectionArgs = { startDate, endDate };
+        String[] selectionArgs = {startDate, endDate};
 
         restartLoaders(DATE_RANGE_REPORT, selectionArgs);
     }
@@ -226,7 +233,7 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
 
         getActivity().setTitle(getString(R.string.filter_by_month));
 
-        String[] selectionArgs = { startDate, endDate };
+        String[] selectionArgs = {startDate, endDate};
 
         restartLoaders(DATE_RANGE_REPORT, selectionArgs);
     }
@@ -244,7 +251,7 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
 
                 getActivity().setTitle(getString(R.string.filter_by_date, systemFormatDateStr));
 
-                String[] selectionArgs = { dateString };
+                String[] selectionArgs = {dateString};
 
                 restartLoaders(DATE_REPORT, selectionArgs);
             }
@@ -272,7 +279,7 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
                 getActivity().setTitle(getString(R.string.filter_by_date_range,
                         sysFormatStartDateStr, sysFormatEndDateStr));
 
-                String[] selectionArgs = { startDateStr, endDateStr };
+                String[] selectionArgs = {startDateStr, endDateStr};
 
                 restartLoaders(DATE_RANGE_REPORT, selectionArgs);
             }
@@ -304,7 +311,7 @@ public class ExpenseReportFragment extends Fragment  implements LoaderManager.Lo
     private void initLoaders() {
         // Retrieve today's date string
         String today = Utils.getDateString(new Date());
-        String[] selectionArgs = { today };
+        String[] selectionArgs = {today};
 
         Bundle args = createBundleArgs(DATE_REPORT, selectionArgs);
 

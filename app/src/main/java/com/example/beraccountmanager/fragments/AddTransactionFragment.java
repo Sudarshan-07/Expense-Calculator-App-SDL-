@@ -50,11 +50,11 @@ public class AddTransactionFragment extends Fragment implements LoaderManager.Lo
     private EditText expense_add_edit_value, transaction_date;
     private AppCompatSpinner choose_category_spinner;
     private ProgressBar select_cat_progress_bar;
-    private RadioGroup radio_group;
+    //private RadioGroup radio_group;
+    //private RadioButton rb1, rb2;
     private SimpleCursorAdapter mAdapter;
     private long mExtraValue;
     private long mExpenseCategoryId = -1;
-    private RadioButton rb1, rb2;
     final DialogFragment dialogFragment = new DatePickerDialogTheme4();
 
     @Override
